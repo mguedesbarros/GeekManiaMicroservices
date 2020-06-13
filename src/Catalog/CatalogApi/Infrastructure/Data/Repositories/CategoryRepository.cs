@@ -22,6 +22,11 @@ namespace CatalogApi.Infrastructure.Data.Repositories
             DbSet.AddAsync(entity);
         }
 
+        public void Delete(Category entity)
+        {
+            DbSet.Remove(entity);
+        }
+
         public Task<Category> FindOneAsync(Expression<Func<Category, bool>> filter)
         {
             IQueryable<Category> set = DbSet;

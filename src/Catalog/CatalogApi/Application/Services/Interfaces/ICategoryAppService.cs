@@ -1,4 +1,5 @@
-﻿using CatalogApi.Models.Category;
+﻿using CatalogApi.Application.Models.Category;
+using CatalogApi.Domain.Queries.Aggregates.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,7 @@ namespace CatalogApi.Application.Services.Interfaces
     {
         Task<CreateCategoryResponse> CreateAsync(CreateCategoryRequest request);
         Task<UpdateCategoryResponse> UpdateAsync(UpdateCategoryRequest request);
+        Task<DeleteCategoryResponse> DeleteAsync(int id);
+        Task<IList<CategoryModel>> GetCategories();
     }
 }

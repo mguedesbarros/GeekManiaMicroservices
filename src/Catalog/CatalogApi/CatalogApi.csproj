@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Domain.Queries\Aggregates\Models\" />
-    <Folder Include="Domain.Queries\Aggregates\Repository\" />
+    <Folder Include="Application\AutoMapper\" />
     <Folder Include="Infrastructure\EntityConfig\" />
     <Folder Include="Infrastructure\Mapper\" />
   </ItemGroup>

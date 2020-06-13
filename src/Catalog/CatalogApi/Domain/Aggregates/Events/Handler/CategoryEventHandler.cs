@@ -10,7 +10,8 @@ namespace CatalogApi.Domain.Aggregates.Events.Handler
 {
     public class CategoryEventHandler :
         INotificationHandler<CreateCategoryEvent>,
-        INotificationHandler<UpdateCategoryEvent>
+        INotificationHandler<UpdateCategoryEvent>,
+        INotificationHandler<DeleteCategoryEvent>
     {
         private readonly IEventBus _eventBus;
 
@@ -26,6 +27,12 @@ namespace CatalogApi.Domain.Aggregates.Events.Handler
         }
 
         public Task Handle(CreateCategoryEvent notification, CancellationToken cancellationToken)
+        {
+            _eventBus.AddEvent(notification);
+            return Task.CompletedTask;
+        }
+
+        public Task Handle(DeleteCategoryEvent notification, CancellationToken cancellationToken)
         {
             _eventBus.AddEvent(notification);
             return Task.CompletedTask;

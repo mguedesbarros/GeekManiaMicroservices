@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CatalogApi.Models
+namespace CatalogApi.Application.Models
 {
     public abstract class BaseResponse
     {

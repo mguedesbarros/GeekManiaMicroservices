@@ -1,4 +1,4 @@
-﻿using CatalogApi.Models;
+﻿using CatalogApi.Application.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;

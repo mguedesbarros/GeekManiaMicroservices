@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CatalogApi.Application.Models.Category
 {
-    public class UpdateCategoryResponse : BaseResponse
+    public class DeleteCategoryResponse : BaseResponse
     {
     }
 }

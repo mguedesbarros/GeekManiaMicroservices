@@ -1,7 +1,9 @@
-﻿using CatalogApi.Domain.Aggregates.Commands.CategoryCmd;
+﻿using AutoMapper;
+using CatalogApi.Application.Models.Category;
+using CatalogApi.Domain.Aggregates.Commands.CategoryCmd;
 using CatalogApi.Domain.Entities;
+using CatalogApi.Domain.Queries.Aggregates.Models;
 using CatalogApi.Domain.SeedWork;
-using CatalogApi.Models.Category;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CatalogApi.Application.Profiles
 {
-    public class CategoryProfile : AutoMapper.Profile
+    public class CategoryProfile : Profile
     {
         public CategoryProfile() => MapCreateCategory();
 
@@ -30,6 +32,12 @@ namespace CatalogApi.Application.Profiles
             CreateMap<CommandResult<Category>, UpdateCategoryResponse>()
                 .ForMember(d => d.Success, opt => opt.MapFrom(o => o.IsSuccess))
                 .ForMember(d => d.Erros, opt => opt.MapFrom(o => o.Erros));
+
+            CreateMap<CommandResult<Category>, DeleteCategoryResponse>()
+                .ForMember(d => d.Success, opt => opt.MapFrom(o => o.IsSuccess))
+                .ForMember(d => d.Erros, opt => opt.MapFrom(o => o.Erros));
+
+            CreateMap<Category, CategoryModel>();
         }
     }
 }

@@ -13,7 +13,8 @@ namespace CatalogApi.Domain.Aggregates.Handlers
 {
     public class CategoryCommandHandler : CommandHandler<Category>,
         IRequestHandler<CreateCategoryCommand, CommandResult<Category>>,
-        IRequestHandler<UpdateCategoryCommand, CommandResult<Category>>
+        IRequestHandler<UpdateCategoryCommand, CommandResult<Category>>,
+        IRequestHandler<DeleteCategoryCommand, CommandResult<Category>>
     {
         private readonly ICategoryRepository _repository;
         public CategoryCommandHandler(ICategoryRepository repository, IUnitOfWork unitOfWork) : base(unitOfWork)
@@ -45,6 +46,20 @@ namespace CatalogApi.Domain.Aggregates.Handlers
             category = new Category(request.Name, request.Image);
 
             _repository.Add(category);
+
+            PublishEvents(category);
+            return CommandResult<Category>.Success(category);
+        }
+
+        public async Task<CommandResult<Category>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+        {
+            var category = await _repository.FindOneAsync(x => x.Id == request.Id);
+
+            if (category == null)
+                return CommandResult<Category>.Fail(category, "Category not exist");
+
+            category.Delete();
+            _repository.Delete(category);
 
             PublishEvents(category);
             return CommandResult<Category>.Success(category);

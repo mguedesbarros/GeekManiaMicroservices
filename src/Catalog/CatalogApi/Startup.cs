@@ -12,6 +12,8 @@ using CatalogApi.Infrastructure.IoC;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using AutoMapper;
+using CatalogApi.Application.Profiles;
 
 namespace CatalogApi
 {
@@ -69,6 +71,14 @@ namespace CatalogApi
                 };
             });
 
+            //var mappingConfig = new MapperConfiguration(mc =>
+            //{
+            //    mc.AddProfile(new CategoryProfile());
+            //});
+
+            //IMapper mapper = mappingConfig.CreateMapper();
+            //services.AddSingleton(mapper);
+
             services.AddDependencies();
 
             //AddDependencies(services);
@@ -99,6 +109,6 @@ namespace CatalogApi
             });
         }
 
-        
+
     }
 }

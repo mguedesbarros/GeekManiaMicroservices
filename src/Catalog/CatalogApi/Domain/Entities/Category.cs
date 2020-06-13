@@ -18,6 +18,7 @@ namespace CatalogApi.Domain.Entities
         {
             Name = name;
             Image = image;
+            this.Status = "A";
             this.CreatedAt = DateTime.Now;
             this.UpdatedAt = this.CreatedAt;
             RaiseEvent(new CreateCategoryEvent(this));
@@ -26,6 +27,7 @@ namespace CatalogApi.Domain.Entities
         public string Name { get; private set; }
         public string Image { get; private set; }
         public List<SubCategory> SubCategory { get; private set; }
+        public string Status { get; set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
 
@@ -37,5 +39,10 @@ namespace CatalogApi.Domain.Entities
             RaiseEvent(new UpdateCategoryEvent(this));
         }
 
+        internal void Delete()
+        {
+            this.UpdatedAt = DateTime.Now;
+            this.Status = "I";
+        }
     }
 }

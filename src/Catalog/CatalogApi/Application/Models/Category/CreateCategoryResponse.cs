@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CatalogApi.Models.Category
+namespace CatalogApi.Application.Models.Category
 {
     public class CreateCategoryResponse : BaseResponse
     {

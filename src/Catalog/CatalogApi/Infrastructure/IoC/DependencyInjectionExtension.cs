@@ -2,6 +2,7 @@
 using CatalogApi.Application.Services.Interfaces;
 using CatalogApi.Domain.Aggregates.Events;
 using CatalogApi.Domain.Aggregates.Events.Handler;
+using CatalogApi.Domain.Queries.Aggregates.Repository;
 using CatalogApi.Domain.Repositories;
 using CatalogApi.Domain.SeedWork;
 using CatalogApi.Infrastructure.Data;
@@ -21,7 +22,6 @@ namespace CatalogApi.Infrastructure.IoC
     {
         public static IServiceCollection AddDependencies(this IServiceCollection services)
         {
-
             services
                .AddSingleton<ITypeAdapterFactory, AutoMapperTypeAdapterFactory>()
                .AddSingleton<ITypeAdapter, AutoMapperTypeAdapter>()
@@ -30,13 +30,10 @@ namespace CatalogApi.Infrastructure.IoC
                .AddScoped<IUnitOfWork, UnitOfWork>()
                .AddDbContext<CatalogContext>()
                .AddTransient<ICategoryRepository, CategoryRepository>()
+               .AddTransient<ICategoryQueriesRepository, CategoryQueriesRepository>()
                .AddTransient<ICategoryAppService, CategoryAppService>()
                .AddScoped<INotificationHandler<CreateCategoryEvent>, CategoryEventHandler>()
                .AddScoped<INotificationHandler<UpdateCategoryEvent>, CategoryEventHandler>();
-            //services.AddScoped<INotificationHandler<CustomerRegisteredEvent>, CustomerEventHandler>();
-            //services.AddScoped<INotificationHandler<CustomerUpdatedEvent>, CustomerEventHandler>();
-            //services.AddScoped<INotificationHandler<CustomerRemovedEvent>, CustomerEventHandler>();
-
 
             services.AddMediatR(typeof(Entity));
 

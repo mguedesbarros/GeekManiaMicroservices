@@ -10,7 +10,8 @@ namespace CatalogApi.Domain.Repositories
     public interface ICategoryRepository : 
         ICreateRepository<Category>,
         IUpdateRepository<Category>, 
-        IQueryRepository<Category>
+        IQueryRepository<Category>,
+        IDeleteRepository<Category>
     {
     }
 }

@@ -13,7 +13,7 @@ namespace CatalogApi.Infrastructure.EntityConfig
                    .WithOne(e => e.Category);
 
             builder.HasKey(p => p.Id);
-            builder.Property(p => p.Key);
+            builder.Property(p => p.Key).IsUnicode(false).HasColumnType("UniqueIdentifier");
 
             builder.Property(p => p.Name)
                    .HasColumnName("name");
