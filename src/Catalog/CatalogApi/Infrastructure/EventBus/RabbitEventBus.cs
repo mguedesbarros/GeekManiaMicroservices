@@ -23,6 +23,11 @@ namespace CatalogApi.Infrastructure.EventBus
         {
             var json = Serialize(@event);
             var channel = _rabbitConnection.GetModel();
+            channel.QueueDeclare(queue: _rabbitConnection.GetQueueName(), 
+                durable: false, 
+                exclusive: false, 
+                autoDelete: false, 
+                arguments: null);
 
             var properties = channel.CreateBasicProperties();
             properties.Persistent = true;

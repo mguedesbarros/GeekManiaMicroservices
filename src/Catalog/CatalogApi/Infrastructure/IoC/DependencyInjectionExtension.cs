@@ -31,9 +31,7 @@ namespace CatalogApi.Infrastructure.IoC
                .AddDbContext<CatalogContext>()
                .AddTransient<ICategoryRepository, CategoryRepository>()
                .AddTransient<ICategoryQueriesRepository, CategoryQueriesRepository>()
-               .AddTransient<ICategoryAppService, CategoryAppService>()
-               .AddScoped<INotificationHandler<CreateCategoryEvent>, CategoryEventHandler>()
-               .AddScoped<INotificationHandler<UpdateCategoryEvent>, CategoryEventHandler>();
+               .AddTransient<ICategoryAppService, CategoryAppService>();
 
             services.AddMediatR(typeof(Entity));
 

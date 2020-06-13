@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CatalogApi.Application.Models.Category;
-using CatalogApi.Domain.Aggregates.Commands.CategoryCmd;
+using CatalogApi.Domain.Aggregates.Commands.Category;
 using CatalogApi.Domain.Entities;
 using CatalogApi.Domain.Queries.Aggregates.Models;
 using CatalogApi.Domain.SeedWork;

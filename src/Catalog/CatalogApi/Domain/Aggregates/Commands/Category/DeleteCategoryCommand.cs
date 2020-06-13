@@ -6,9 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace CatalogApi.Domain.Aggregates.Commands.CategoryCmd
+namespace CatalogApi.Domain.Aggregates.Commands.Category
 {
-    public class DeleteCategoryCommand : ICommand<CommandResult<Category>>
+    public class DeleteCategoryCommand : ICommand<CommandResult<Entities.Category>>
     {
         public DeleteCategoryCommand(int id)
         {

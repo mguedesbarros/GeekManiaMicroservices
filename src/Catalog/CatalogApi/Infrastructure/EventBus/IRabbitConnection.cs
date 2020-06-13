@@ -11,5 +11,6 @@ namespace CatalogApi.Infrastructure.EventBus
         IModel GetModel();
         string GetExchange();
         string GetRoutingKey();
+        string GetQueueName();
     }
 }

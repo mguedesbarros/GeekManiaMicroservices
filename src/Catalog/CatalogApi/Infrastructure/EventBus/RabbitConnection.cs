@@ -28,13 +28,13 @@ namespace CatalogApi.Infrastructure.EventBus
                             HostName = rabbitMqOptions.Value.Hostname,
                             Port = rabbitMqOptions.Value.Port,
                             UserName = rabbitMqOptions.Value.UserName,
-                            Password = rabbitMqOptions.Value.Password
+                            Password = rabbitMqOptions.Value.Password,
+                            AutomaticRecoveryEnabled = true
                         };
 
+                        QueueName = rabbitMqOptions.Value.QueueName;
                         _connection = factory.CreateConnection();
                         _channel = _connection.CreateModel();
-
-                        QueueName = rabbitMqOptions.Value.QueueName;
                     }
                 }
             }
@@ -50,6 +50,10 @@ namespace CatalogApi.Infrastructure.EventBus
         }
 
         public string GetRoutingKey()
+        {
+            return QueueName;
+        }
+        public string GetQueueName()
         {
             return QueueName;
         }

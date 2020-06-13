@@ -8,31 +8,31 @@ using System.Threading.Tasks;
 
 namespace CatalogApi.Domain.Aggregates.Events.Handler
 {
-    public class CategoryEventHandler :
-        INotificationHandler<CreateCategoryEvent>,
-        INotificationHandler<UpdateCategoryEvent>,
-        INotificationHandler<DeleteCategoryEvent>
+    public class EventHandler<T> : 
+        INotificationHandler<CreateEvent<T>>,
+        INotificationHandler<UpdateEvent<T>>,
+        INotificationHandler<DeleteEvent<T>>
     {
         private readonly IEventBus _eventBus;
 
-        public CategoryEventHandler(IEventBus eventBus)
+        public EventHandler(IEventBus eventBus)
         {
             _eventBus = eventBus;
         }
 
-        public Task Handle(UpdateCategoryEvent notification, CancellationToken cancellationToken)
+        public Task Handle(CreateEvent<T> notification, CancellationToken cancellationToken)
         {
             _eventBus.AddEvent(notification);
             return Task.CompletedTask;
         }
 
-        public Task Handle(CreateCategoryEvent notification, CancellationToken cancellationToken)
+        public Task Handle(UpdateEvent<T> notification, CancellationToken cancellationToken)
         {
             _eventBus.AddEvent(notification);
             return Task.CompletedTask;
         }
 
-        public Task Handle(DeleteCategoryEvent notification, CancellationToken cancellationToken)
+        public Task Handle(DeleteEvent<T> notification, CancellationToken cancellationToken)
         {
             _eventBus.AddEvent(notification);
             return Task.CompletedTask;

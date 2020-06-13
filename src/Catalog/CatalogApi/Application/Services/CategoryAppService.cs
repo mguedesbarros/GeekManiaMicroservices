@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CatalogApi.Application.Models.Category;
 using CatalogApi.Application.Services.Interfaces;
-using CatalogApi.Domain.Aggregates.Commands.CategoryCmd;
+using CatalogApi.Domain.Aggregates.Commands.Category;
 using CatalogApi.Domain.Queries.Aggregates.Models;
 using CatalogApi.Domain.Queries.Aggregates.Repository;
 using CatalogApi.Domain.SeedWork;

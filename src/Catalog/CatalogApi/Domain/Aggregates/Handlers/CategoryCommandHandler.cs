@@ -1,4 +1,4 @@
-﻿using CatalogApi.Domain.Aggregates.Commands.CategoryCmd;
+﻿using CatalogApi.Domain.Aggregates.Commands.Category;
 using CatalogApi.Domain.Entities;
 using CatalogApi.Domain.Repositories;
 using CatalogApi.Domain.SeedWork;
@@ -59,7 +59,7 @@ namespace CatalogApi.Domain.Aggregates.Handlers
                 return CommandResult<Category>.Fail(category, "Category not exist");
 
             category.Delete();
-            _repository.Delete(category);
+            _repository.Update(category);
 
             PublishEvents(category);
             return CommandResult<Category>.Success(category);

@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Application\AutoMapper\" />
     <Folder Include="Infrastructure\EntityConfig\" />
     <Folder Include="Infrastructure\Mapper\" />
   </ItemGroup>
