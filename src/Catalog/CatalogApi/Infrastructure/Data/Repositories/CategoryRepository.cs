@@ -15,27 +15,6 @@ namespace CatalogApi.Infrastructure.Data.Repositories
     {
         public CategoryRepository(CatalogContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
-        }
-
-        public void Add(Category entity)
-        {
-            DbSet.AddAsync(entity);
-        }
-
-        public void Delete(Category entity)
-        {
-            DbSet.Remove(entity);
-        }
-
-        public Task<Category> FindOneAsync(Expression<Func<Category, bool>> filter)
-        {
-            IQueryable<Category> set = DbSet;
-            return set.FirstOrDefaultAsync(filter);
-        }
-
-        public void Update(Category entity)
-        {
-            DbSet.Update(entity);
-        }
+        }        
     }
 }

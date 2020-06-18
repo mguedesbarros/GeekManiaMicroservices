@@ -45,7 +45,7 @@ namespace CatalogApi.Domain.Aggregates.Handlers
 
             category = new Category(request.Name, request.Image);
 
-            _repository.Add(category);
+            _repository.Create(category);
 
             PublishEvents(category);
             return CommandResult<Category>.Success(category);

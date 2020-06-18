@@ -7,13 +7,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Filters;
-using CatalogApi.Messaging.Options;
 using CatalogApi.Infrastructure.IoC;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using AutoMapper;
 using CatalogApi.Application.Profiles;
+using CatalogApi.Infrastructure.EventBus;
 
 namespace CatalogApi
 {

@@ -1,52 +1,30 @@
-﻿using System;
+﻿using CatalogApi.Application.Models.Product;
+using CatalogApi.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using CatalogApi.Application.Models.Category;
-using CatalogApi.Application.Services.Interfaces;
-using CatalogApi.Domain.Entities;
-using CatalogApi.Domain.Queries.Aggregates.Models;
-using CatalogApi.Domain.Repositories;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CatalogApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CategoryController : ControllerBase
+    public class ProductController : ControllerBase
     {
-        private readonly ICategoryAppService _service;
+        private readonly IProductAppService _service;
 
-        public CategoryController(ICategoryAppService service)
+        public ProductController(IProductAppService service)
         {
-            _service = service ?? throw new ArgumentNullException(nameof(service));
-        }
-
-        [HttpGet]
-        [Route("GetCategories")]
-        [ProducesResponseType(typeof(IList<CategoryModel>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult> GetCategories()
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState.GetErrorResponse());
-
-            var result = await _service.GetCategories();
-            if (!result.Any())
-                return NotFound();
-
-            return Ok(result);
+            _service = service;
         }
 
         [HttpPost]
         [Route("Create")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<ActionResult> Create([FromBody] CreateCategoryRequest request)
+        public async Task<ActionResult> Create([FromBody] CreateProductRequest request)
         {
             try
             {
@@ -59,10 +37,6 @@ namespace CatalogApi.Controllers
 
                 return Ok();
             }
-            catch (ArgumentNullException ex)
-            {
-                return NotFound("Category does not exist");
-            }
             catch (Exception ex)
             {
                 return BadRequest(ex);
@@ -72,8 +46,8 @@ namespace CatalogApi.Controllers
         [HttpPut]
         [Route("Update")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult> Update([FromBody] UpdateCategoryRequest request)
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public async Task<ActionResult> Update([FromBody] UpdateProductRequest request)
         {
             try
             {
@@ -85,10 +59,6 @@ namespace CatalogApi.Controllers
                     return BadRequest(response.Erros);
 
                 return Ok();
-            }
-            catch (ArgumentNullException ex)
-            {
-                return NotFound("Category does not exist");
             }
             catch (Exception ex)
             {
@@ -110,10 +80,6 @@ namespace CatalogApi.Controllers
                     return BadRequest(response.Erros);
 
                 return Ok();
-            }
-            catch (ArgumentNullException ex)
-            {
-                return NotFound("Category does not exist");
             }
             catch (Exception ex)
             {

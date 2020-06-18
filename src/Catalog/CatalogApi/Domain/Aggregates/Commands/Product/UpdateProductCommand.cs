@@ -8,8 +8,9 @@ using System.Windows.Input;
 
 namespace CatalogApi.Domain.Aggregates.Commands.Product
 {
-    public class CreateProductCommand : ICommand<CommandResult<Entities.Product>>
+    public class UpdateProductCommand : ICommand<CommandResult<Entities.Product>>
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal UnityPrice { get; set; }

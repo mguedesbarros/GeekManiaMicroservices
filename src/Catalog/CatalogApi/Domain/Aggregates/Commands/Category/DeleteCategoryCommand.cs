@@ -15,6 +15,6 @@ namespace CatalogApi.Domain.Aggregates.Commands.Category
             Id = id;
         }
 
-        public int Id { get; set; }
+        public int Id { get; private set; }
     }
 }

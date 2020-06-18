@@ -27,7 +27,7 @@ namespace CatalogApi.Domain.Entities
         public string Name { get; private set; }
         public string Image { get; private set; }
         public List<SubCategory> SubCategory { get; private set; }
-        public string Status { get; set; }
+        public string Status { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
 

@@ -1,5 +1,4 @@
-﻿using CatalogApi.Messaging.Options;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;

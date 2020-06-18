@@ -2,7 +2,9 @@
 using CatalogApi.Infrastructure.EntityConfig;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
+using MySqlConnector.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -24,6 +26,7 @@ namespace CatalogApi.Infrastructure.Data
         public DbSet<Product> Product { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<SubCategory> SubCategory { get; set; }
+        public DbSet<ProductImage> ProductImage { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -49,6 +52,7 @@ namespace CatalogApi.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new SubCategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
 
             base.OnModelCreating(modelBuilder);
 

@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace CatalogApi.Domain.Repositories
 {
-    public interface ICategoryRepository : 
-        IBaseRepository<Category>,
-        IQueryRepository<Category>
+    public interface IProductRepository : 
+        IBaseRepository<Product>,
+        IQueryRepository<Product>
     {
+        Task<Product> GetProductById(int id);
     }
 }
