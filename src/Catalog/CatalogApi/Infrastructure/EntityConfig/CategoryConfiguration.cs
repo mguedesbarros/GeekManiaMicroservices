@@ -8,32 +8,21 @@ namespace CatalogApi.Infrastructure.EntityConfig
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder.ToTable("Category", "geekmania");
-            builder.HasMany(c => c.SubCategory)
+            builder.ToTable("Category");
+            builder.HasMany(c => c.SubCategories)
                    .WithOne(e => e.Category);
 
             builder.HasKey(p => p.Id);
-            builder.Property(p => p.Key).IsUnicode(false).HasColumnType("UniqueIdentifier");
 
-            builder.Property(p => p.Name)
-                   .HasColumnName("name");
-            
-            builder.Property(p => p.Image)
-                   .HasColumnName("url_image");
+            builder.Property(p => p.Id).IsRequired();
+            builder.Property(p => p.Key).IsRequired();
+            builder.Property(p => p.Name).HasMaxLength(200).HasColumnName("name").IsRequired();            
+            builder.Property(p => p.Image).HasMaxLength(2000).HasColumnName("image").IsRequired();
+            builder.Property(p => p.CreatedAt).HasColumnName("createdAt").IsRequired();
+            builder.Property(p => p.UpdatedAt).HasColumnName("updatedAt").IsRequired();
+            builder.Property(p => p.Status).HasMaxLength(1).HasColumnName("status").IsRequired();
 
-            builder.Property(p => p.CreatedAt)
-                   .HasColumnName("createdAt")
-                   .IsRequired();
-
-            builder.Property(p => p.UpdatedAt)
-                   .HasColumnName("updatedAt")
-                   .IsRequired();
-
-            builder.Ignore(p => p.SubCategory);
             builder.Ignore(p => p.Events);
-
-
-
         }
     }
 }

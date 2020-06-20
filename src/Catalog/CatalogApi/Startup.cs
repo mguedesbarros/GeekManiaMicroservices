@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using AutoMapper;
 using CatalogApi.Application.Profiles;
 using CatalogApi.Infrastructure.EventBus;
+using MySqlConnector.Logging;
 
 namespace CatalogApi
 {

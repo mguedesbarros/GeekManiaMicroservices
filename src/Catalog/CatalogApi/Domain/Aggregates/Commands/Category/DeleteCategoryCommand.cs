@@ -10,11 +10,11 @@ namespace CatalogApi.Domain.Aggregates.Commands.Category
 {
     public class DeleteCategoryCommand : ICommand<CommandResult<Entities.Category>>
     {
-        public DeleteCategoryCommand(int id)
+        public DeleteCategoryCommand(Guid id)
         {
             Id = id;
         }
 
-        public int Id { get; private set; }
+        public Guid Id { get; private set; }
     }
 }

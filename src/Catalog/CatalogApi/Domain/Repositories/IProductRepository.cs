@@ -11,6 +11,6 @@ namespace CatalogApi.Domain.Repositories
         IBaseRepository<Product>,
         IQueryRepository<Product>
     {
-        Task<Product> GetProductById(int id);
+        Task<Product> GetProductById(Guid id);
     }
 }

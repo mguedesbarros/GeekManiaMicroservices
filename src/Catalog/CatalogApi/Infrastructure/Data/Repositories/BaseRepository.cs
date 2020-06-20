@@ -40,6 +40,9 @@ namespace CatalogApi.Infrastructure.Data.Repositories
 
         public void Update(TEntity entity)
         {
+            var _entity = this.context.Entry(entity);
+            _entity.State = EntityState.Modified;
+
             DbSet.Update(entity);
         }
     }

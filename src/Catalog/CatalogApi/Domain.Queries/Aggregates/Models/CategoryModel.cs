@@ -8,7 +8,11 @@ namespace CatalogApi.Domain.Queries.Aggregates.Models
 {
     public class CategoryModel
     {
-        public int Id { get; set; }
+        public CategoryModel()
+        {
+            SubCategories = new List<SubCategory>();
+        }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }
         public List<SubCategory> SubCategories { get; set; }

@@ -11,5 +11,6 @@ namespace CatalogApi.Domain.Repositories
         IBaseRepository<Category>,
         IQueryRepository<Category>
     {
+        Task<Category> GetCategoryById(Guid id);
     }
 }

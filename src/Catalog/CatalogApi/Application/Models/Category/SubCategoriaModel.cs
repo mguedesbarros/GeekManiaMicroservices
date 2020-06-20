@@ -1,16 +1,14 @@
-﻿using CatalogApi.Domain.SeedWork;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CatalogApi.Domain.Entities
+namespace CatalogApi.Application.Models
 {
-    public class SubCategory
+    public class SubCategoriaModel
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public Guid CategoryId { get; set; }
-        public virtual Category Category { get; set; }
     }
 }

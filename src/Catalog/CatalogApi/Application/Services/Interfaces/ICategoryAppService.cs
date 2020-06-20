@@ -11,7 +11,7 @@ namespace CatalogApi.Application.Services.Interfaces
     {
         Task<CreateCategoryResponse> CreateAsync(CreateCategoryRequest request);
         Task<UpdateCategoryResponse> UpdateAsync(UpdateCategoryRequest request);
-        Task<DeleteCategoryResponse> DeleteAsync(int id);
+        Task<DeleteCategoryResponse> DeleteAsync(Guid id);
         Task<IList<CategoryModel>> GetCategories();
     }
 }

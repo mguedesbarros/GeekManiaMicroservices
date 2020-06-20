@@ -10,8 +10,9 @@ namespace CatalogApi.Domain.Aggregates.Commands.Category
 {
     public class UpdateCategoryCommand : ICommand<CommandResult<Entities.Category>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }
+        public List<SubCategory> SubCategories { get; set; }
     }
 }

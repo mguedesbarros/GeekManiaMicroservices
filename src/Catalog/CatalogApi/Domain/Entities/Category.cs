@@ -12,12 +12,16 @@ namespace CatalogApi.Domain.Entities
     {
         public Category()
         {
+            SubCategories = new List<SubCategory>();
         }
 
-        public Category(string name, string image) : base()
+        public Category(string name, 
+            string image, 
+            List<SubCategory> subCategories) : base()
         {
             Name = name;
             Image = image;
+            SubCategories = subCategories;
             this.Status = "A";
             this.CreatedAt = DateTime.Now;
             this.UpdatedAt = this.CreatedAt;
@@ -26,15 +30,18 @@ namespace CatalogApi.Domain.Entities
 
         public string Name { get; private set; }
         public string Image { get; private set; }
-        public List<SubCategory> SubCategory { get; private set; }
+        public List<SubCategory> SubCategories { get; private set; }
         public string Status { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
 
-        internal void Update(string name, string image)
+        internal void Update(string name, 
+                             string image,
+                             List<SubCategory> subCategories)
         {
             this.Name = name;
             this.Image = image;
+            this.SubCategories = subCategories;
             this.UpdatedAt = DateTime.Now;
 
             RaiseEvent(new UpdateEvent<Category>("Category.Update", this));

@@ -16,10 +16,10 @@ namespace CatalogApi.Domain.Entities
             string description, 
             decimal unityPrice, 
             int quantityInStock, 
-            string image, 
-            int categoryId, 
-            int? subCategoryId, 
-            int? noveltyId,
+            string image,
+            Guid categoryId,
+            Guid? subCategoryId,
+            Guid? noveltyId,
             List<ProductImage> images)
         {
             Name = name;
@@ -44,9 +44,9 @@ namespace CatalogApi.Domain.Entities
             decimal unityPrice,
             int quantityInStock,
             string image,
-            int categoryId,
-            int? subCategoryId,
-            int? noveltyId,
+            Guid categoryId,
+            Guid? subCategoryId,
+            Guid? noveltyId,
             List<ProductImage> images)
         {
             Name = name;
@@ -77,9 +77,9 @@ namespace CatalogApi.Domain.Entities
         public decimal UnityPrice { get; private set; }
         public int QuantityInStock { get; private set; }
         public string Image { get; private set; }
-        public int CategoryId { get; private set; }
-        public int? SubCategoryId { get; private set; }
-        public int? NoveltyId { get; private set; }
+        public Guid CategoryId { get; private set; }
+        public Guid? SubCategoryId { get; private set; }
+        public Guid? NoveltyId { get; private set; }
         public List<ProductImage> Images { get; private set; }
         public string Status { get; private set; }
         public DateTime CreatedAt { get; private set; }

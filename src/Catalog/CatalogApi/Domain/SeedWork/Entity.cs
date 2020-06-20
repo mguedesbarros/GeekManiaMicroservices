@@ -9,12 +9,13 @@ namespace CatalogApi.Domain.SeedWork
     {
         protected Entity()
         {
+            this.Id = Guid.NewGuid();
             this._events = new List<IEvent>();
             this.Key = Guid.NewGuid();
         }
 
         private readonly List<IEvent> _events;
-        public int Id { get; private set; }
+        public Guid Id { get; private set; }
         public Guid Key { get; private set; }
         public IReadOnlyCollection<IEvent> Events => this._events;
         protected void RaiseEvent(IEvent @event) =>  _events.Add(@event);        

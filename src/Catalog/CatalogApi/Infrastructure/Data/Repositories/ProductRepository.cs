@@ -19,7 +19,7 @@ namespace CatalogApi.Infrastructure.Data.Repositories
             dbSet = _context.Set<Product>();
         }
 
-        public async Task<Product> GetProductById(int id)
+        public async Task<Product> GetProductById(Guid id)
         {
             await _context.ProductImage.ToListAsync();
             return await dbSet.FindAsync(id);

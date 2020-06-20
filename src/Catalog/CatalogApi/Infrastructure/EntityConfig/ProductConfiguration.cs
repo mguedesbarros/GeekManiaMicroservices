@@ -8,23 +8,24 @@ namespace CatalogApi.Infrastructure.EntityConfig
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.ToTable("Product", "geekmania");
+            builder.ToTable("Product");
             builder.HasMany(c => c.Images)
                    .WithOne(e => e.Product)
                    .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasKey(b => b.Id);
-            
-            builder.Property(p => p.Key).IsUnicode(false).HasColumnType("UniqueIdentifier");
-            builder.Property(p => p.Name).HasColumnName("name");
-            builder.Property(p => p.Description).HasColumnName("description");            
-            builder.Property(p => p.UnityPrice).HasColumnName("unity_price");            
-            builder.Property(p => p.QuantityInStock).HasColumnName("quantity_stock");
-            builder.Property(p => p.Image).HasColumnName("image");
-            builder.Property(p => p.CategoryId).HasColumnName("category_id");            
-            builder.Property(p => p.SubCategoryId).HasColumnName("subcategory_id");       
-            builder.Property(p => p.NoveltyId).HasColumnName("novelty_id");
-            builder.Property(p => p.Status).HasColumnName("status").IsRequired();
+            builder.Property(p => p.Id).IsRequired();
+
+            builder.Property(p => p.Key).IsRequired();
+            builder.Property(p => p.Name).HasMaxLength(100).HasColumnName("name").IsRequired();
+            builder.Property(p => p.Description).HasMaxLength(300).HasColumnName("description").IsRequired();            
+            builder.Property(p => p.UnityPrice).HasColumnName("unity_price").IsRequired();            
+            builder.Property(p => p.QuantityInStock).HasColumnName("quantity_stock").IsRequired();
+            builder.Property(p => p.Image).HasMaxLength(2000).HasColumnName("image").IsRequired();
+            builder.Property(p => p.CategoryId).HasColumnName("category_id").IsRequired();            
+            builder.Property(p => p.SubCategoryId).HasColumnName("subcategory_id").IsRequired(false);
+            builder.Property(p => p.NoveltyId).HasColumnName("novelty_id").IsRequired(false);
+            builder.Property(p => p.Status).HasMaxLength(1).HasColumnName("status").IsRequired();
             builder.Property(p => p.CreatedAt).HasColumnName("createdAt").IsRequired();
             builder.Property(p => p.UpdatedAt).HasColumnName("updatedAt").IsRequired();
 

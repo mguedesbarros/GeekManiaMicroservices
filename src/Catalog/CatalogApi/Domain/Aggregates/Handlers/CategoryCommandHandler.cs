@@ -24,12 +24,12 @@ namespace CatalogApi.Domain.Aggregates.Handlers
 
         public async Task<CommandResult<Category>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
-            var category = await _repository.FindOneAsync(x => x.Name.ToLower().Equals(request.Name.ToLower()));
+            var category = await _repository.GetCategoryById(request.Id);
 
             if (category == null)
                 return CommandResult<Category>.Fail(category, "Name not exist");
 
-            category.Update(request.Name, request.Image);
+            category.Update(request.Name, request.Image, request.SubCategories);
             _repository.Update(category);
 
             PublishEvents(category);
@@ -43,7 +43,7 @@ namespace CatalogApi.Domain.Aggregates.Handlers
             if (category != null)
                 return CommandResult<Category>.Fail(category, "Name already exists");
 
-            category = new Category(request.Name, request.Image);
+            category = new Category(request.Name, request.Image, request.SubCategories);
 
             _repository.Create(category);
 
@@ -53,7 +53,7 @@ namespace CatalogApi.Domain.Aggregates.Handlers
 
         public async Task<CommandResult<Category>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
         {
-            var category = await _repository.FindOneAsync(x => x.Id == request.Id);
+            var category = await _repository.GetCategoryById(request.Id);
 
             if (category == null)
                 return CommandResult<Category>.Fail(category, "Category not exist");

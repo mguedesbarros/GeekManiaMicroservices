@@ -58,7 +58,7 @@ namespace CatalogApi.Application.Services
             return response.ProjectedAs<UpdateCategoryResponse>();
         }
 
-        public async Task<DeleteCategoryResponse> DeleteAsync(int id)
+        public async Task<DeleteCategoryResponse> DeleteAsync(Guid id)
         {
             var command = new DeleteCategoryCommand(id);
             var response = await _mediator.Send(command);

@@ -5,6 +5,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Infrastructure\Data\20200619135332_InitialMigration.cs" />
+    <Compile Remove="Infrastructure\Data\20200619135332_InitialMigration.Designer.cs" />
+    <Compile Remove="Infrastructure\Data\Migrations\20200619135757_InitialMigration.cs" />
+    <Compile Remove="Infrastructure\Data\Migrations\20200619135757_InitialMigration.Designer.cs" />
+    <Compile Remove="Infrastructure\Data\Migrations\20200619140216_InitialMigration.cs" />
+    <Compile Remove="Infrastructure\Data\Migrations\20200619140216_InitialMigration.Designer.cs" />
+    <Compile Remove="Infrastructure\Data\Migrations\20200619144220_InitialMigration.cs" />
+    <Compile Remove="Infrastructure\Data\Migrations\20200619144220_InitialMigration.Designer.cs" />
+    <Compile Remove="Infrastructure\Data\Migrations\20200619144340_InitialMigration.cs" />
+    <Compile Remove="Infrastructure\Data\Migrations\20200619144340_InitialMigration.Designer.cs" />
+    <Compile Remove="Infrastructure\Data\Migrations\20200619145527_InitialMigration.cs" />
+    <Compile Remove="Infrastructure\Data\Migrations\20200619145527_InitialMigration.Designer.cs" />
+    <Compile Remove="Infrastructure\Data\Migrations\20200619151555_ModifyOnDeleteCategory.cs" />
+    <Compile Remove="Infrastructure\Data\Migrations\20200619151555_ModifyOnDeleteCategory.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Infrastructure\Mapper\" />
   </ItemGroup>
 
@@ -13,7 +30,12 @@
     <PackageReference Include="MediatR" Version="8.0.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.5" />
+    <PackageReference Include="MySqlConnector.Logging.Microsoft.Extensions.Logging" Version="0.58.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
     <PackageReference Include="RabbitMQ.Client" Version="6.1.0" />
   </ItemGroup>

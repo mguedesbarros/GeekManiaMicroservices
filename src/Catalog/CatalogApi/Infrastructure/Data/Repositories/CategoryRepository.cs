@@ -13,8 +13,19 @@ namespace CatalogApi.Infrastructure.Data.Repositories
 {
     public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
+        protected CatalogContext _context;
+        protected DbSet<Category> dbSet;
+
         public CategoryRepository(CatalogContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
-        }        
+            _context = context;
+            dbSet = _context.Set<Category>();
+        }
+
+        public async Task<Category> GetCategoryById(Guid id)
+        {
+            await _context.SubCategory.ToListAsync();
+            return await dbSet.FindAsync(id);
+        }
     }
 }

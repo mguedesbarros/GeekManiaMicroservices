@@ -25,7 +25,7 @@ namespace CatalogApi.Application.Profiles
                 .ForMember(d => d.CategoryId, opt => opt.MapFrom(o => o.CategoryId))
                 .ForMember(d => d.SubCategoryId, opt => opt.MapFrom(o => o.SubCategoryId))
                 .ForMember(d => d.NoveltyId, opt => opt.MapFrom(o => o.NoveltyId))
-                .ForMember(d => d.Images, opt => opt.MapFrom(o => o.Images.Select(s => new ProductImage { Image = s }).ToList()));
+                .ForMember(d => d.Images, opt => opt.MapFrom(o => o.Images.Select(s => new ProductImage(s)).ToList()));
 
             CreateMap<CommandResult<Product>, CreateProductResponse>()
                 .ForMember(d => d.Success, opt => opt.MapFrom(o => o.IsSuccess))
@@ -41,7 +41,7 @@ namespace CatalogApi.Application.Profiles
                 .ForMember(d => d.CategoryId, opt => opt.MapFrom(o => o.CategoryId))
                 .ForMember(d => d.SubCategoryId, opt => opt.MapFrom(o => o.SubCategoryId))
                 .ForMember(d => d.NoveltyId, opt => opt.MapFrom(o => o.NoveltyId))
-                .ForMember(d => d.Images, opt => opt.MapFrom(o => o.Images.Select(s => new ProductImage { Image = s }).ToList()));
+                .ForMember(d => d.Images, opt => opt.MapFrom(o => o.Images.Select(s => new ProductImage(s)).ToList()));
 
             CreateMap<CommandResult<Product>, UpdateProductResponse>()
                 .ForMember(d => d.Success, opt => opt.MapFrom(o => o.IsSuccess))

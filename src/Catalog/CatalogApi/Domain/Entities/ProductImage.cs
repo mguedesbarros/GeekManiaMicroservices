@@ -6,10 +6,17 @@ using System.Threading.Tasks;
 
 namespace CatalogApi.Domain.Entities
 {
-    public class ProductImage : Entity
+    public class ProductImage
     {
-        public string Image { get; set; }
-        public int? ProductId { get; set; }
+        public ProductImage() { }
+        public ProductImage(string image)
+        {
+            Id = Guid.NewGuid();
+            Image = image;
+        }
+        public Guid Id { get; set; }
+        public string Image { get; private set; }
+        public Guid ProductId { get; set; }
         public Product Product { get; set; }
     }
 }

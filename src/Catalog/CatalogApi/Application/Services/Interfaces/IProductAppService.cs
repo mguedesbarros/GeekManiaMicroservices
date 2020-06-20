@@ -10,6 +10,6 @@ namespace CatalogApi.Application.Services.Interfaces
     {
         Task<CreateProductResponse> CreateAsync(CreateProductRequest request);
         Task<UpdateProductResponse> UpdateAsync(UpdateProductRequest request);
-        Task<DeleteProductResponse> DeleteAsync(int id);
+        Task<DeleteProductResponse> DeleteAsync(Guid id);
     }
 }

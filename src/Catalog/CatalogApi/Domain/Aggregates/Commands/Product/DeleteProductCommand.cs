@@ -8,11 +8,11 @@ namespace CatalogApi.Domain.Aggregates.Commands.Product
 {
     public class DeleteProductCommand : ICommand<CommandResult<Entities.Product>>
     {
-        public DeleteProductCommand(int id)
+        public DeleteProductCommand(Guid id)
         {
             Id = id;
         }
 
-        public int Id { get; private set; }
+        public Guid Id { get; private set; }
     }
 }

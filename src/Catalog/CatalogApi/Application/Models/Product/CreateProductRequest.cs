@@ -32,11 +32,11 @@ namespace CatalogApi.Application.Models.Product
         public string Image { get; set; }
         [Required]
         [JsonProperty("categoryId")]
-        public int CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
         [JsonProperty("subCategoryId")]
-        public int? SubCategoryId { get; set; }
+        public Guid? SubCategoryId { get; set; }
         [JsonProperty("noveltyId")]
-        public int? NoveltyId { get; set; }
+        public Guid? NoveltyId { get; set; }
         [Required]
         public List<string> Images { get; set; }
 

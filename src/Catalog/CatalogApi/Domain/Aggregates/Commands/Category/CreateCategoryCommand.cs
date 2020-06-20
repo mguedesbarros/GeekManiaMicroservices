@@ -9,7 +9,12 @@ namespace CatalogApi.Domain.Aggregates.Commands.Category
 {
     public class CreateCategoryCommand : ICommand<CommandResult<Entities.Category>>
     {
+        public CreateCategoryCommand()
+        {
+            SubCategories = new List<SubCategory>();
+        }
         public string Name { get; set; }
         public string Image { get; set; }
+        public List<SubCategory> SubCategories { get; set; }
     }
 }
