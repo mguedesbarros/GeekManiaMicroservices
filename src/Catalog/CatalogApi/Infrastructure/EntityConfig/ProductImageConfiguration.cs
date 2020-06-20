@@ -10,7 +10,8 @@ namespace CatalogApi.Infrastructure.EntityConfig
         {
             builder.ToTable("ProductImage");
             builder.HasOne(c => c.Product)
-                   .WithMany(e => e.Images);
+                   .WithMany(e => e.Images)
+                   .HasForeignKey(p => p.ProductId);
 
             builder.HasKey(p => p.Id);
 

@@ -10,8 +10,13 @@ namespace CatalogApi.Infrastructure.EntityConfig
         {
             builder.ToTable("Category");
             builder.HasMany(c => c.SubCategories)
-                   .WithOne(e => e.Category);
+                   .WithOne(e => e.Category)
+                   .HasForeignKey(p => p.CategoryId);
 
+            builder.HasMany(c => c.Products)
+                   .WithOne(e => e.Category)
+                   .HasForeignKey(p => p.CategoryId);                   
+            
             builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Id).IsRequired();

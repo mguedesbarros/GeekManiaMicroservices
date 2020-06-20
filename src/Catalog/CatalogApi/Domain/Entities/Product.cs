@@ -84,6 +84,7 @@ namespace CatalogApi.Domain.Entities
         public string Status { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
+        public virtual Category Category { get; set; }
 
     }
 }

@@ -11,10 +11,10 @@ namespace CatalogApi.Application.Models.Product
     {
         public UpdateProductRequest()
         {
-            Images = new List<string>();
+            Images = new List<ProductImageModel>();
         }
         [Required]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         [JsonProperty("unityPrice")]
@@ -28,6 +28,6 @@ namespace CatalogApi.Application.Models.Product
         public Guid? SubCategoryId { get; set; }
         [JsonProperty("noveltyId")]
         public Guid? NoveltyId { get; set; }
-        public List<string> Images { get; set; }
+        public List<ProductImageModel> Images { get; set; }
     }
 }

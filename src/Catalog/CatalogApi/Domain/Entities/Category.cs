@@ -34,6 +34,7 @@ namespace CatalogApi.Domain.Entities
         public string Status { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
+        public virtual ICollection<Product> Products { get; set; }
 
         internal void Update(string name, 
                              string image,

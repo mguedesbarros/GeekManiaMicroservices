@@ -11,7 +11,11 @@ namespace CatalogApi.Infrastructure.EntityConfig
             builder.ToTable("Product");
             builder.HasMany(c => c.Images)
                    .WithOne(e => e.Product)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .HasForeignKey(p => p.ProductId);
+
+            builder.HasOne(c => c.Category)
+                   .WithMany(e => e.Products)
+                   .HasForeignKey(p => p.CategoryId);
 
             builder.HasKey(b => b.Id);
             builder.Property(p => p.Id).IsRequired();

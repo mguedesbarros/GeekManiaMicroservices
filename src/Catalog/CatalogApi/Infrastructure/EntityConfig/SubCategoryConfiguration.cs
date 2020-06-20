@@ -10,7 +10,8 @@ namespace CatalogApi.Infrastructure.EntityConfig
         {
             builder.ToTable("SubCategory");
             builder.HasOne(c => c.Category)
-                   .WithMany(e => e.SubCategories);
+                   .WithMany(e => e.SubCategories)
+                   .HasForeignKey(p => p.CategoryId);
 
             builder.HasKey(p => p.Id);
                 
