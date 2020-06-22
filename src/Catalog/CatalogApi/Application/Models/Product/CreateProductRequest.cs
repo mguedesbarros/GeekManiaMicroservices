@@ -13,7 +13,7 @@ namespace CatalogApi.Application.Models.Product
     {
         public CreateProductRequest()
         {
-            Images = new List<string>();
+            Images = new List<ProductImageModel>();
         }
 
         [Required]
@@ -38,7 +38,7 @@ namespace CatalogApi.Application.Models.Product
         [JsonProperty("noveltyId")]
         public Guid? NoveltyId { get; set; }
         [Required]
-        public List<string> Images { get; set; }
+        public List<ProductImageModel> Images { get; set; }
 
     }
 }

@@ -20,11 +20,13 @@ namespace CatalogApi.Domain.SeedWork
         public T EventData { get; private set; }
         public object GetEventData() => this.EventData;
         public string GetEventType() => this.EventType;
+        public string GetEventName() => EventData.GetType().Name;
     }
 
     public interface IEvent : INotification
     {
         object GetEventData();
         string GetEventType();
+        string GetEventName();
     }
 }
