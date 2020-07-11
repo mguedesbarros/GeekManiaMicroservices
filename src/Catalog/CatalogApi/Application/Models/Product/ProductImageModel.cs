@@ -8,6 +8,6 @@ namespace CatalogApi.Application.Models.Product
     public class ProductImageModel
     {
         public Guid Id { get; set; }
-        public string Image { get; set; }
+        public string Url { get; set; }
     }
 }

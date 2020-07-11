@@ -1,4 +1,5 @@
 ﻿using CatalogApi.Domain.Aggregates.Events;
+using CatalogApi.Domain.Aggregates.Events.Product;
 using CatalogApi.Domain.SeedWork;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace CatalogApi.Domain.Entities
             this.CreatedAt = DateTime.Now;
             this.UpdatedAt = this.CreatedAt;
 
-            RaiseEvent(new CreateEvent<Product>("Product.Create", this));
+            RaiseEvent(new ProductCreateEvent("Product.Create", this));
         }
 
         internal void Update(string name,

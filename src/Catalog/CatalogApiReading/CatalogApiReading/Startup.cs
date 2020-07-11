@@ -2,8 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CatalogApiReading.Infrastructure;
-using CatalogApiReading.Infrastructure.EventBus;
+using CatalogApiReading.Infrastructure.Data;
+using CatalogApiReading.Infrastructure.Data.Product;
+using CatalogApiReading.Infrastructure.IoC;
+using CatalogApiReading.IntegrationEvent.EventHandling;
+using CatalogApiReading.IntegrationEvent.Events;
+using CatalogApiReading.Models;
+using GeekManiaMicroservices.Broker.EventBus;
+using GeekManiaMicroservices.Broker.EventBus.Abstractions;
+using GeekManiaMicroservices.Broker.EventBusRabbitMQ;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -14,8 +21,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using RabbitMQ.Client;
 
 namespace CatalogApiReading
 {
@@ -41,21 +50,13 @@ namespace CatalogApiReading
                 {
                     NamingStrategy = new SnakeCaseNamingStrategy()
                 };
-                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             });
+            services.Configure<CatalogDatabaseSettings>(Configuration.GetSection(nameof(CatalogDatabaseSettings)));
 
-            // Verificando a disponibilidade do broker de mensageria
-            // através de Health Checks
-            //services.AddHealthChecks()
-            //    .AddRabbitMQ(Configuration.GetConnectionString("RabbitMQ"), name: "RabbitMQ");
-            //services.AddHealthChecks();
-            //services.AddHealthChecksUI();
+            //IoC
+            services.AddDependencies(Configuration);
 
-            services.Configure<RabbitMqConfiguration>(Configuration.GetSection("RabbitMq"));
-
-            services.AddHostedService<RabbitSubscribe>();
-
-            services.AddDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,6 +87,15 @@ namespace CatalogApiReading
             {
                 endpoints.MapControllers();
             });
+
+            ConfigureEventBus(app);
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<ProductCreateEvent, ProductCreateEventHandler>();
+            eventBus.Subscribe<CategoryCreateEvent, CategoryCreateEventHandler>();
         }
     }
 }

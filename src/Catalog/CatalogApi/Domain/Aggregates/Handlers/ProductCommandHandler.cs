@@ -2,6 +2,7 @@
 using CatalogApi.Domain.Entities;
 using CatalogApi.Domain.Repositories;
 using CatalogApi.Domain.SeedWork;
+using CatalogApi.IntegrationEvents.Events;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,11 @@ namespace CatalogApi.Domain.Aggregates.Handlers
         IRequestHandler<DeleteProductCommand, CommandResult<Product>>
     {
         private readonly IProductRepository _repository;
-        public ProductCommandHandler(IProductRepository repository, IUnitOfWork unitOfWork) : base(unitOfWork)
+        private GeekManiaMicroservices.Broker.EventBus.Abstractions.IEventBus _eventBus;
+        public ProductCommandHandler(IProductRepository repository, IUnitOfWork unitOfWork, GeekManiaMicroservices.Broker.EventBus.Abstractions.IEventBus eventBus) : base(unitOfWork)
         {
             _repository = repository;
+            _eventBus = eventBus;
         }
 
         public async Task<CommandResult<Product>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
@@ -37,9 +40,22 @@ namespace CatalogApi.Domain.Aggregates.Handlers
                 request.CategoryId, 
                 request.SubCategoryId, 
                 request.NoveltyId, 
-                request.Images);
+                request.Images);            
 
             _repository.Create(product);
+
+            //var productEvent = new ProductIntegrationEvent(product.Name,
+            //   product.Description,
+            //   product.UnityPrice,
+            //   product.QuantityInStock,
+            //   product.Image,
+            //   product.CategoryId,
+            //   product.SubCategoryId,
+            //   product.NoveltyId,
+            //   product.Images.Select(s => ProductImage.CreateModel(s)).ToList(),
+            //   product.Status,
+            //   product.CreatedAt,
+            //   product.UpdatedAt);
 
             PublishEvents(product);
             return CommandResult<Product>.Success(product);

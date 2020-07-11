@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace CatalogApi.Domain.SeedWork
 {
-    public abstract class CommandHandler<TEntity> where TEntity : Entity
+    public abstract class CommandHandler<TEntity> 
+        where TEntity : Entity
+
     {
         private readonly IUnitOfWork _unitOfWork;
 

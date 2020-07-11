@@ -1,4 +1,4 @@
-﻿using CatalogApi.Domain.SeedWork;
+﻿using GeekManiaMicroservices.Broker.EventBus.Abstractions;
 using MediatR;
 using System;
 using System.Collections.Generic;

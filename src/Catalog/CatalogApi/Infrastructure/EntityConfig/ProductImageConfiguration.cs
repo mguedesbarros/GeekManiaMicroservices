@@ -16,7 +16,7 @@ namespace CatalogApi.Infrastructure.EntityConfig
             builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Id).IsRequired();
-            builder.Property(p => p.Image).HasMaxLength(2000).HasColumnName("image").IsRequired();
+            builder.Property(p => p.Url).HasMaxLength(2000).HasColumnName("image").IsRequired();
             builder.Property(p => p.ProductId).HasColumnName("product_id").IsRequired();
         }
     }

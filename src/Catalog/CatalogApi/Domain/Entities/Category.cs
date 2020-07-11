@@ -1,4 +1,5 @@
 ﻿using CatalogApi.Domain.Aggregates.Events;
+using CatalogApi.Domain.Aggregates.Events.Category;
 using CatalogApi.Domain.SeedWork;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace CatalogApi.Domain.Entities
             this.Status = "A";
             this.CreatedAt = DateTime.Now;
             this.UpdatedAt = this.CreatedAt;
-            RaiseEvent(new CreateEvent<Category>("Category.Create", this));
+            RaiseEvent(new CategoryCreateEvent("Category.Create", this));
         }
 
         public string Name { get; private set; }
@@ -45,7 +46,7 @@ namespace CatalogApi.Domain.Entities
             this.SubCategories = subCategories;
             this.UpdatedAt = DateTime.Now;
 
-            RaiseEvent(new UpdateEvent<Category>("Category.Update", this));
+            //RaiseEvent(new CategoryCreateEvent("Category.Update", this));
         }
 
         internal void Delete()
@@ -53,7 +54,8 @@ namespace CatalogApi.Domain.Entities
             this.UpdatedAt = DateTime.Now;
             this.Status = "I";
 
-            RaiseEvent(new DeleteEvent<Category>("Category.Delete", this));
+            //RaiseEvent(new DeleteEvent<Category>("Category.Delete", this));
+            //RaiseEvent(new CategoryCreateEvent("Category.Update", this));
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using CatalogApi.Domain.SeedWork;
+using eekManiaMicroservices.Broker.EventBus.Abstractions;
+using GeekManiaMicroservices.Broker.EventBus.Abstractions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using RabbitMQ.Client;
@@ -44,6 +46,36 @@ namespace CatalogApi.Infrastructure.EventBus
         {
             events.ToList().ForEach(p => this.AddEvent(p));
         }
+
+        public void Publish(IEvent @event)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Subscribe<T, TH>()
+            where T : IEvent
+            where TH : IEventHandler<T>
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SubscribeDynamic<TH>(string eventName) where TH : IDynamicIntegrationEventHandler
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Unsubscribe<T, TH>()
+            where T : IEvent
+            where TH : IEventHandler<T>
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnsubscribeDynamic<TH>(string eventName) where TH : IDynamicIntegrationEventHandler
+        {
+            throw new NotImplementedException();
+        }
+
         private string Serialize(IEvent @event) => JsonConvert.SerializeObject(
             value: @event,
             new JsonSerializerSettings()

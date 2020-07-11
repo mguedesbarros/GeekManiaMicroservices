@@ -9,12 +9,15 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc.Filters;
 using CatalogApi.Infrastructure.IoC;
 using Newtonsoft.Json.Serialization;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using AutoMapper;
-using CatalogApi.Application.Profiles;
 using CatalogApi.Infrastructure.EventBus;
-using MySqlConnector.Logging;
+using System;
+using Microsoft.Extensions.Logging;
+using GeekManiaMicroservices.Broker.EventBus.Abstractions;
+using CatalogApi.Domain.Aggregates.Events;
+using CatalogApi.Domain.Entities;
+using CatalogApi.Domain.Aggregates.Handlers;
+using CatalogApi.Domain.Aggregates.Events.Product;
 
 namespace CatalogApi
 {
@@ -65,15 +68,18 @@ namespace CatalogApi
             });
 
             //IoC
-            services.AddDependencies();
+            services.AddDependencies(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            if (env.IsDevelopment())
+            var pathBase = Configuration["PATH_BASE"];
+
+            if (!string.IsNullOrEmpty(pathBase))
             {
-                app.UseDeveloperExceptionPage();
+                loggerFactory.CreateLogger<Startup>().LogDebug("Using PATH BASE '{pathBase}'", pathBase);
+                app.UsePathBase(pathBase);
             }
 
             app.UseHttpsRedirection();
@@ -87,8 +93,7 @@ namespace CatalogApi
             {
                 endpoints.MapControllers();
             });
+
         }
-
-
     }
 }

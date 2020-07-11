@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GeekManiaMicroservices.Broker.EventBus.Abstractions;
+using GeekManiaMicroservices.Broker.EventBus.Events;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;

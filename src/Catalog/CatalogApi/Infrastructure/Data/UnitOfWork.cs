@@ -1,4 +1,5 @@
 ﻿using CatalogApi.Domain.SeedWork;
+using GeekManiaMicroservices.Broker.EventBus.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -29,6 +30,7 @@ namespace CatalogApi.Infrastructure.Data
         {
             _events.AddRange(events);
         }
+
 
         public void Commit()
         {
