@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogApi", "src\Catalog\C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{4A8F9F35-98B4-4B24-AC99-18AB28E98BD9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogApiReading", "src\Catalog\CatalogApiReading\CatalogApiReading\CatalogApiReading.csproj", "{BEDFE9CE-D1B7-4F0F-AD14-B6D11B9F800F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogApiReading", "src\Catalog\CatalogApiReading\CatalogApiReading.csproj", "{BEDFE9CE-D1B7-4F0F-AD14-B6D11B9F800F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Broker", "Broker", "{81D7700A-EC71-438D-BD84-3DC9E89A47CF}"
 EndProject

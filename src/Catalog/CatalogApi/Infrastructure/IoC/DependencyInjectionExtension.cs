@@ -51,7 +51,9 @@ namespace CatalogApi.Infrastructure.IoC
                    var factory = new ConnectionFactory()
                    {
                        HostName = configuration["EventBusConnection"],
+                       Port = int.Parse(configuration["EventBusPort"]),
                        DispatchConsumersAsync = true
+                       
                    };
 
                    if (!string.IsNullOrEmpty(configuration["EventBusUserName"]))

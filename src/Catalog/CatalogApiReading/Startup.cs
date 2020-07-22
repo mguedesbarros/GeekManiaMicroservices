@@ -1,21 +1,35 @@
-using System.Reflection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CatalogApiReading.Infrastructure.Data;
+using CatalogApiReading.Infrastructure.Data.Product;
+using CatalogApiReading.Infrastructure.IoC;
+using CatalogApiReading.IntegrationEvent.EventHandling;
+using CatalogApiReading.IntegrationEvent.Events;
+using CatalogApiReading.Models;
+using GeekManiaMicroservices.Broker.EventBus;
+using GeekManiaMicroservices.Broker.EventBus.Abstractions;
+using GeekManiaMicroservices.Broker.EventBusRabbitMQ;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MediatR;
-using Microsoft.AspNetCore.Mvc.Filters;
-using CatalogApi.Infrastructure.IoC;
-using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json;
-using CatalogApi.Infrastructure.EventBus;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using RabbitMQ.Client;
 
-namespace CatalogApi
+namespace CatalogApiReading
 {
-    public partial class Startup
+    public class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -27,6 +41,7 @@ namespace CatalogApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -36,30 +51,9 @@ namespace CatalogApi
                 {
                     NamingStrategy = new SnakeCaseNamingStrategy()
                 };
-                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             });
-
-            services.AddHealthChecks();
-
-            services.Configure<RabbitMqConfiguration>(Configuration.GetSection("RabbitMq"));
-            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
-
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.InvalidModelStateResponseFactory = actionContext =>
-                {
-                    var actionExecutingContext =
-                        actionContext as ActionExecutingContext;
-
-                    if (actionContext.ModelState.ErrorCount > 0
-                        && actionExecutingContext?.ActionArguments.Count == actionContext.ActionDescriptor.Parameters.Count)
-                    {
-                        return new UnprocessableEntityObjectResult(actionContext.ModelState);
-                    }
-
-                    return new BadRequestObjectResult(actionContext.ModelState);
-                };
-            });
+            services.Configure<CatalogDatabaseSettings>(Configuration.GetSection(nameof(CatalogDatabaseSettings)));
 
             //IoC
             services.AddDependencies(Configuration);
@@ -69,7 +63,7 @@ namespace CatalogApi
                 c.SwaggerDoc("v1",
                     new OpenApiInfo
                     {
-                        Title = "Api GeekManiaCatalog Administrativo",
+                        Title = "Api GeekManiaCatalogReading",
                         Version = "v1",
                         Description = "Exemplo de API REST criada com o ASP.NET Core 3.1 para GeekMania",
                         Contact = new OpenApiContact
@@ -79,17 +73,15 @@ namespace CatalogApi
                         }
                     });
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var pathBase = Configuration["PATH_BASE"];
-
-            if (!string.IsNullOrEmpty(pathBase))
+            if (env.IsDevelopment())
             {
-                loggerFactory.CreateLogger<Startup>().LogDebug("Using PATH BASE '{pathBase}'", pathBase);
-                app.UsePathBase(pathBase);
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
@@ -97,11 +89,20 @@ namespace CatalogApi
             app.UseRouting();
 
             app.UseAuthorization();
-            app.UseHealthChecks("/hc");
+
+            // Gera o endpoint que retornará os dados utilizados no dashboard
+            //app.UseHealthChecks("/healthchecks-data-ui", new HealthCheckOptions()
+            //{
+            //    Predicate = _ => true,
+            //    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            //});
+
+            //// Ativa o dashboard para a visualização da situação de cada Health Check
+            //app.UseHealthChecksUI();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api de GeekManiaCatalog v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api de GeekManiaCatalogReading V1");
             });
 
             app.UseEndpoints(endpoints =>
@@ -109,6 +110,14 @@ namespace CatalogApi
                 endpoints.MapControllers();
             });
 
+            ConfigureEventBus(app);
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<ProductCreateEvent, ProductCreateEventHandler>();
+            eventBus.Subscribe<CategoryCreateEvent, CategoryCreateEventHandler>();
         }
     }
 }

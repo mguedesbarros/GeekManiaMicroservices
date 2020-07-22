@@ -2,45 +2,29 @@
 
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
-		<UserSecretsId>4ac3288c-77c1-42f7-889a-a3eab93d00e5</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerfileContext>..\..\..</DockerfileContext>
+		<UserSecretsId>94635897-4348-401c-a82a-724772a4a21d</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="Infrastructure\Data\20200619135332_InitialMigration.cs" />
-		<Compile Remove="Infrastructure\Data\20200619135332_InitialMigration.Designer.cs" />
-		<Compile Remove="Infrastructure\Data\Migrations\20200619135757_InitialMigration.cs" />
-		<Compile Remove="Infrastructure\Data\Migrations\20200619135757_InitialMigration.Designer.cs" />
-		<Compile Remove="Infrastructure\Data\Migrations\20200619140216_InitialMigration.cs" />
-		<Compile Remove="Infrastructure\Data\Migrations\20200619140216_InitialMigration.Designer.cs" />
-		<Compile Remove="Infrastructure\Data\Migrations\20200619144220_InitialMigration.cs" />
-		<Compile Remove="Infrastructure\Data\Migrations\20200619144220_InitialMigration.Designer.cs" />
-		<Compile Remove="Infrastructure\Data\Migrations\20200619144340_InitialMigration.cs" />
-		<Compile Remove="Infrastructure\Data\Migrations\20200619144340_InitialMigration.Designer.cs" />
-		<Compile Remove="Infrastructure\Data\Migrations\20200619145527_InitialMigration.cs" />
-		<Compile Remove="Infrastructure\Data\Migrations\20200619145527_InitialMigration.Designer.cs" />
-		<Compile Remove="Infrastructure\Data\Migrations\20200619151555_ModifyOnDeleteCategory.cs" />
-		<Compile Remove="Infrastructure\Data\Migrations\20200619151555_ModifyOnDeleteCategory.Designer.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Infrastructure\Mapper\" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="AutoMapper" Version="8.0.0" />
+		<PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="3.1.2" />
+		<PackageReference Include="AspNetCore.HealthChecks.UI" Version="3.1.1" />
+		<PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="3.1.1" />
 		<PackageReference Include="MediatR" Version="8.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.5" />
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.5" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.5">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.5" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
-		<PackageReference Include="MySqlConnector.Logging.Microsoft.Extensions.Logging" Version="0.58.0" />
-		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
+		<PackageReference Include="MongoDB.Driver" Version="2.10.4" />
+		<PackageReference Include="MongoDB.Driver.Core" Version="2.10.4" />
 		<PackageReference Include="RabbitMQ.Client" Version="6.1.0" />
 		<PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="3.0.3" />
 		<PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="3.0.0" />

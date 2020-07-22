@@ -17,7 +17,7 @@ namespace CatalogApi.Controllers
 
         public ProductController(IProductAppService service)
         {
-            _service = service;
+            _service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         [HttpPost]
