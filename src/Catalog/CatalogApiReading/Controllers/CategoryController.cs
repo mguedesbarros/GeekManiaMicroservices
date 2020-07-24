@@ -7,6 +7,7 @@ using CatalogApiReading.Infrastructure.Data.Category;
 using CatalogApiReading.Infrastructure.Data.CategoryProduct;
 using CatalogApiReading.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace CatalogApiReading.Controllers
 {
@@ -16,12 +17,15 @@ namespace CatalogApiReading.Controllers
     {
         private readonly ICategoryProductRepository _categoryProductRepository;
         private readonly ICategoryRedisRepository _categoryRedis;
+        private readonly ILogger<CategoryController> _logger;
 
         public CategoryController(ICategoryProductRepository categoryProductRepository, 
-                                  ICategoryRedisRepository categoryRedis)
+                                  ICategoryRedisRepository categoryRedis,
+                                  ILogger<CategoryController> logger)
         {
             _categoryProductRepository = categoryProductRepository ?? throw new ArgumentNullException(nameof(categoryProductRepository));
             _categoryRedis = categoryRedis ?? throw new ArgumentNullException(nameof(categoryRedis));
+            _logger = logger;
         }
 
         [HttpGet]
@@ -31,26 +35,35 @@ namespace CatalogApiReading.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult> Get()
         {
-            var categories = await _categoryRedis.GetCategories();
-
-            if (!categories.Any())
+            try
             {
-                var categoryProducts = await _categoryProductRepository.GetAll();
+                var categories = await _categoryRedis.GetCategories();
 
-                categories = categoryProducts.GroupBy(g => g.Name)
-                                                 .Select(s => new Category
-                                                 {
-                                                     Id = s.FirstOrDefault().Id,
-                                                     Name = s.FirstOrDefault().Name
-                                                 }).ToList();
+                if (!categories.Any())
+                {
+                    var categoryProducts = await _categoryProductRepository.GetAll();
 
-                if (categories.Any())
-                    _categoryRedis.Delete();
+                    categories = categoryProducts.GroupBy(g => g.Name)
+                                                     .Select(s => new Category
+                                                     {
+                                                         Id = s.FirstOrDefault().Id,
+                                                         Name = s.FirstOrDefault().Name
+                                                     }).ToList();
 
-                _categoryRedis.Add(categories);
+                    if (categories.Any())
+                        _categoryRedis.Delete();
+
+                    _categoryRedis.Add(categories);
+                }
+
+                return Ok(categories);
             }
-
-            return Ok(categories);
+            catch(Exception ex)
+            {
+                _logger.LogCritical(ex.Message);
+                return BadRequest();
+            }
+            
         }
     }
 }

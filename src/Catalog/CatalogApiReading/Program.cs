@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Events;
 
 namespace CatalogApiReading
 {
@@ -21,7 +22,7 @@ namespace CatalogApiReading
         {
             var configuration = GetConfiguration();
 
-            //Log.Logger = CreateSerilogLogger(configuration);
+            Log.Logger = CreateSerilogLogger(configuration);
 
             try
             {
@@ -48,12 +49,12 @@ namespace CatalogApiReading
             }
             catch (Exception ex)
             {
-                //Log.Fatal(ex, "Program terminated unexpectedly ({ApplicationContext})!", AppName);
+                Log.Fatal(ex, "Program terminated unexpectedly!", AppName);
                 return 1;
             }
             finally
             {
-                //Log.CloseAndFlush();
+                Log.CloseAndFlush();
             }
         }
 
@@ -65,7 +66,8 @@ namespace CatalogApiReading
         //        });
         private static IWebHost CreateHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((hostingContext, config) => {
+            .ConfigureAppConfiguration((hostingContext, config) =>
+            {
                 config.Sources.Clear();
 
                 var env = hostingContext.HostingEnvironment;
@@ -89,16 +91,14 @@ namespace CatalogApiReading
 
         private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
         {
-            var seqServerUrl = configuration["Serilog:SeqServerUrl"];
-            var logstashUrl = configuration["Serilog:LogstashgUrl"];
+            //var seqServerUrl = configuration["Serilog:SeqServerUrl"];
+            //var logstashUrl = configuration["Serilog:LogstashgUrl"];
             return new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .Enrich.WithProperty("ApplicationContext", AppName)
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
-                //.WriteTo.Console()
-                //.WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
-                //.WriteTo.Http(string.IsNullOrWhiteSpace(logstashUrl) ? "http://logstash:8080" : logstashUrl)
-                .ReadFrom.Configuration(configuration)
+                .WriteTo.Console()
+                .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
         }
 

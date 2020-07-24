@@ -1,0 +1,1 @@
+2020-07-24 16:41:17.198 -03:00 [INF] RabbitMQ Client is trying to connect

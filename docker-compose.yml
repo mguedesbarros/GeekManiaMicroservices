@@ -10,8 +10,8 @@ services:
             - ASPNETCORE_ENVIRONMENT=Production 
         restart: always
         ports:
-            - "8041:80"
-            - "9041:443"
+            - "8042:80"
+            - "9042:443"
         networks: 
             - geekmania_networks
 
@@ -24,100 +24,28 @@ services:
             - ASPNETCORE_ENVIRONMENT=Production
         restart: always
         ports:
-            - "8042:80"
-            - "9042:443"
+            - "8043:80"
+            - "9043:443"
         networks: 
             - geekmania_networks
             
-    geekmania-rabbitmq1:
+    geekmania-rabbitmq:
         image: rabbitmq:3-management
-        container_name: geekmania-rabbitmq1
-        hostname: geekmania-rabbitmq1
+        container_name: geekmania-rabbitmq
+        hostname: geekmania-rabbitmq
         ports:
-            - "9043:15672"
+            - 9043:15672
+            - 5673:5672
+            - 25676:25676
         networks: 
             - geekmania_networks
         volumes:
-            - /docker/volumes/geekmania-rabbitmq1:/var/lib/rabbitmq
+            - /docker/volumes/geekmania-rabbitmq:/var/lib/rabbitmq
         environment:
             - RABBITMQ_ERLANG_COOKIE=geekmania-guedes
             - RABBITMQ_DEFAULT_USER=mqgeek
             - RABBITMQ_DEFAULT_PASS=Kennyguedes@
-            - CLUSTERED=true
-             
-    geekmania-rabbitmq2:
-        image: rabbitmq:3-management
-        container_name: geekmania-rabbitmq2
-        hostname: geekmania-rabbitmq2
-        ports:
-            - "9044:15672"
-        networks: 
-            - geekmania_networks
-        volumes:
-            - /docker/volumes/geekmania-rabbitmq2:/var/lib/rabbitmq
-        environment:
-            - RABBITMQ_ERLANG_COOKIE=geekmania-guedes
-            - RABBITMQ_DEFAULT_USER=mqgeek
-            - RABBITMQ_DEFAULT_PASS=Kennyguedes@
-            - CLUSTERED=true
-        links:
-            - geekmania-rabbitmq1:geekmania-rabbitmq1
-             
-    geekmania-rabbitmq3:
-        image: rabbitmq:3-management
-        container_name: geekmania-rabbitmq3
-        hostname: geekmania-rabbitmq3
-        ports:
-            - "9045:15672"
-        networks: 
-            - geekmania_networks
-        volumes:
-            - /docker/volumes/geekmania-rabbitmq3:/var/lib/rabbitmq
-        environment:
-            - RABBITMQ_ERLANG_COOKIE=geekmania-guedes
-            - RABBITMQ_DEFAULT_USER=mqgeek
-            - RABBITMQ_DEFAULT_PASS=Kennyguedes@
-            - CLUSTERED=true
-        links:
-            - geekmania-rabbitmq1:geekmania-rabbitmq1
-            - geekmania-rabbitmq2:geekmania-rabbitmq2
-             
-    geekmania-rabbitmq4:
-        image: rabbitmq:3-management
-        container_name: geekmania-rabbitmq4
-        hostname: geekmania-rabbitmq4
-        ports:
-            - "9046:15672"
-        networks: 
-            - geekmania_networks
-        volumes:
-            - /docker/volumes/geekmania-rabbitmq4:/var/lib/rabbitmq
-        environment:
-            - RABBITMQ_ERLANG_COOKIE=geekmania-guedes
-            - RABBITMQ_DEFAULT_USER=mqgeek
-            - RABBITMQ_DEFAULT_PASS=Kennyguedes@
-            - CLUSTERED=true
-        links:
-            - geekmania-rabbitmq1:geekmania-rabbitmq1
-            - geekmania-rabbitmq2:geekmania-rabbitmq2
-            - geekmania-rabbitmq3:geekmania-rabbitmq3
-             
-    haproxy:
-        image: geekmania-haproxy:v1
-        container_name: geekmania-haproxy
-        hostname: geekmania-haproxy
-        ports:
-            - 5672:5672
-            - 20000:20000
-        networks: 
-            - geekmania_networks
-        links:
-            - geekmania-rabbitmq1:geekmania-rabbitmq1
-            - geekmania-rabbitmq2:geekmania-rabbitmq2
-            - geekmania-rabbitmq3:geekmania-rabbitmq3
-            - geekmania-rabbitmq4:geekmania-rabbitmq4
 
 networks: 
     geekmania_networks:
-        name: geekmania_networks
         driver: bridge

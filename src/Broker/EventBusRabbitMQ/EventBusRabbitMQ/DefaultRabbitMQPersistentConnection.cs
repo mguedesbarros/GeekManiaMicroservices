@@ -80,6 +80,8 @@ namespace GeekManiaMicroservices.Broker.EventBusRabbitMQ
                 {
                     _connection = _connectionFactory
                           .CreateConnection();
+
+                    _logger.LogInformation("RabbitMQ Client acquired a persistent connection to '{HostName}'", _connection.Endpoint.HostName);
                 });
 
                 if (IsConnected)

@@ -59,16 +59,23 @@ namespace CatalogApiReading.Infrastructure.IoC
                         HostName = Configuration["EventBusConnection"],
                         Port = int.Parse(Configuration["EventBusPort"]),
                         DispatchConsumersAsync = true
+                       
                     };
+
+                    Console.WriteLine($"HostName - {Configuration["EventBusConnection"]}");
+                    Console.WriteLine($"Port - {Configuration["EventBusPort"]}");
+                    
 
                     if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
                     {
                         factory.UserName = Configuration["EventBusUserName"];
+                        Console.WriteLine($"HostName - {factory.UserName}");
                     }
 
                     if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
                     {
                         factory.Password = Configuration["EventBusPassword"];
+                        Console.WriteLine($"HostName - {factory.Password}");
                     }
 
                     var retryCount = 5;
