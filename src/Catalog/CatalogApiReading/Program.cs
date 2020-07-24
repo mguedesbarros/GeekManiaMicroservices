@@ -26,7 +26,7 @@ namespace CatalogApiReading
             try
             {
                 //Log.Information("Configuring web host ({ApplicationContext})...", AppName);
-                var host = CreateHostBuilder(configuration, args);
+                var host = CreateHostBuilder(args);
 
                 //Log.Information("Applying migrations ({ApplicationContext})...", AppName);
                 //host.MigrateDbContext<CatalogContext>((context, services) =>
@@ -63,9 +63,23 @@ namespace CatalogApiReading
         //        {
         //            webBuilder.UseStartup<Startup>();
         //        });
-        private static IWebHost CreateHostBuilder(IConfiguration configuration, string[] args) =>
+        private static IWebHost CreateHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
+            .ConfigureAppConfiguration((hostingContext, config) => {
+                config.Sources.Clear();
+
+                var env = hostingContext.HostingEnvironment;
+                config.SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables();
+
+                if (args != null)
+                {
+                    config.AddCommandLine(args);
+                }
+            })
+            //.ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
             .CaptureStartupErrors(false)
             .UseStartup<Startup>()
             .UseContentRoot(Directory.GetCurrentDirectory())

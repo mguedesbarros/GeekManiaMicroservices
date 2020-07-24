@@ -26,7 +26,7 @@ namespace CatalogApi
             try
             {
                 //Log.Information("Configuring web host ({ApplicationContext})...", AppName);
-                var host = CreateHostBuilder(configuration, args);
+                var host = CreateHostBuilder(args);
 
                 //Log.Information("Applying migrations ({ApplicationContext})...", AppName);
                 //host.MigrateDbContext<CatalogContext>((context, services) =>
@@ -57,9 +57,23 @@ namespace CatalogApi
             }
         }
 
-        private static IWebHost CreateHostBuilder(IConfiguration configuration, string[] args) =>
+        private static IWebHost CreateHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
+            .ConfigureAppConfiguration((hostingContext, config) =>{
+                config.Sources.Clear();
+
+                var env = hostingContext.HostingEnvironment;
+                config.SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables();
+
+                if (args != null)
+                {
+                    config.AddCommandLine(args);
+                }
+            })
+            // .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
             .CaptureStartupErrors(false)            
             .UseStartup<Startup>()
             .UseContentRoot(Directory.GetCurrentDirectory())
@@ -90,21 +104,14 @@ namespace CatalogApi
         }
 
         private static IConfiguration GetConfiguration()
-        {
+        {           
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
             var config = builder.Build();
-
-            //if (config.GetValue<bool>("UseVault", false))
-            //{
-            //    builder.AddAzureKeyVault(
-            //        $"https://{config["Vault:Name"]}.vault.azure.net/",
-            //        config["Vault:ClientId"],
-            //        config["Vault:ClientSecret"]);
-            //}
 
             return builder.Build();
         }

@@ -6,10 +6,12 @@ services:
         build: 
             context: .
             dockerfile: "src/Catalog/CatalogApi/Dockerfile"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Production 
         restart: always
         ports:
-            - "8081:80"
-            - "9091:443"
+            - "8041:80"
+            - "9041:443"
         networks: 
             - geekmania_networks
 
@@ -18,10 +20,12 @@ services:
         build: 
             context: .
             dockerfile: "src/Catalog/CatalogApiReading/Dockerfile"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Production
         restart: always
         ports:
-            - "8082:80"
-            - "9092:443"
+            - "8042:80"
+            - "9042:443"
         networks: 
             - geekmania_networks
             
@@ -30,11 +34,11 @@ services:
         container_name: geekmania-rabbitmq1
         hostname: geekmania-rabbitmq1
         ports:
-            - "8080:15672"
+            - "9043:15672"
         networks: 
             - geekmania_networks
         volumes:
-            - $PWD/storage/geekmania-rabbitmq1:/var/lib/rabbitmq
+            - /docker/volumes/geekmania-rabbitmq1:/var/lib/rabbitmq
         environment:
             - RABBITMQ_ERLANG_COOKIE=geekmania-guedes
             - RABBITMQ_DEFAULT_USER=mqgeek
@@ -46,11 +50,11 @@ services:
         container_name: geekmania-rabbitmq2
         hostname: geekmania-rabbitmq2
         ports:
-            - "8081:15672"
+            - "9044:15672"
         networks: 
             - geekmania_networks
         volumes:
-            - $PWD/storage/geekmania-rabbitmq2:/var/lib/rabbitmq
+            - /docker/volumes/geekmania-rabbitmq2:/var/lib/rabbitmq
         environment:
             - RABBITMQ_ERLANG_COOKIE=geekmania-guedes
             - RABBITMQ_DEFAULT_USER=mqgeek
@@ -64,11 +68,11 @@ services:
         container_name: geekmania-rabbitmq3
         hostname: geekmania-rabbitmq3
         ports:
-            - "8082:15672"
+            - "9045:15672"
         networks: 
             - geekmania_networks
         volumes:
-            - $PWD/storage/geekmania-rabbitmq3:/var/lib/rabbitmq
+            - /docker/volumes/geekmania-rabbitmq3:/var/lib/rabbitmq
         environment:
             - RABBITMQ_ERLANG_COOKIE=geekmania-guedes
             - RABBITMQ_DEFAULT_USER=mqgeek
@@ -83,11 +87,11 @@ services:
         container_name: geekmania-rabbitmq4
         hostname: geekmania-rabbitmq4
         ports:
-            - "8083:15672"
+            - "9046:15672"
         networks: 
             - geekmania_networks
         volumes:
-            - $PWD/storage/geekmania-rabbitmq4:/var/lib/rabbitmq
+            - /docker/volumes/geekmania-rabbitmq4:/var/lib/rabbitmq
         environment:
             - RABBITMQ_ERLANG_COOKIE=geekmania-guedes
             - RABBITMQ_DEFAULT_USER=mqgeek
@@ -99,7 +103,7 @@ services:
             - geekmania-rabbitmq3:geekmania-rabbitmq3
              
     haproxy:
-        image: haproxy:1.6
+        image: geekmania-haproxy:v1
         container_name: geekmania-haproxy
         hostname: geekmania-haproxy
         ports:
