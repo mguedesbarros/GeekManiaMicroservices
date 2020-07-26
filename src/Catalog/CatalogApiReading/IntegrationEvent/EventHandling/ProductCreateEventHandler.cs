@@ -1,4 +1,5 @@
 ﻿using CatalogApiReading.Infrastructure.Data;
+using CatalogApiReading.Infrastructure.Data.Caching;
 using CatalogApiReading.Infrastructure.Data.Caching.CategoryProduct;
 using CatalogApiReading.Infrastructure.Data.CategoryProduct;
 using CatalogApiReading.Infrastructure.Data.UoW;
@@ -13,6 +14,7 @@ namespace CatalogApiReading.IntegrationEvent.EventHandling
 {
     public class ProductCreateEventHandler : IEventHandler<ProductCreateEvent>
     {
+        const string KEY_CACHE = "categoryProduct";
         private readonly ICategoryProductRedisRepository _categoryProductRedisRepository;
         private readonly ICategoryProductRepository _categoryProductRepository;
         private readonly IUnitOfWork _uow;
@@ -28,7 +30,9 @@ namespace CatalogApiReading.IntegrationEvent.EventHandling
 
         public async Task Handle(ProductCreateEvent @event)
         {
+            
             var productEvent = @event.ProductEvent;
+            var key = $"{KEY_CACHE}-{productEvent.CategoryId}";
 
             var categoryProduct = await _categoryProductRepository.GetCategoryProductsByDocumentId(productEvent.CategoryId);
 
@@ -54,12 +58,9 @@ namespace CatalogApiReading.IntegrationEvent.EventHandling
                 _categoryProductRepository.Update(categoryProduct);
                 await _uow.Commit();
 
-                //var resultRedis = await _categoryProductRedisRepository.GetCategoryProductsByDocumentId(categoryProduct.Id);
+                _categoryProductRedisRepository.Remove(key, (int)RedisBase.Product);
 
-                //if (resultRedis != null)
-                //    _categoryProductRedisRepository.Delete(categoryProduct.Id);
-
-                //_categoryProductRedisRepository.Add(categoryProduct);
+                _categoryProductRedisRepository.Set(key, categoryProduct, (int)RedisBase.Product);
 
             }
         }

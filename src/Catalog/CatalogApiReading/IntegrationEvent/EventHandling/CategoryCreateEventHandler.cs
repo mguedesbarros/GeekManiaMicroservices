@@ -1,4 +1,5 @@
 ﻿using CatalogApiReading.Infrastructure.Data;
+using CatalogApiReading.Infrastructure.Data.Caching;
 using CatalogApiReading.Infrastructure.Data.Caching.CategoryProduct;
 using CatalogApiReading.Infrastructure.Data.Category;
 using CatalogApiReading.Infrastructure.Data.CategoryProduct;
@@ -16,6 +17,7 @@ namespace CatalogApiReading.IntegrationEvent.EventHandling
 {
     public class CategoryCreateEventHandler : IEventHandler<CategoryCreateEvent>
     {
+        const string KEY_CACHE = "categories";
         private readonly ICategoryProductRedisRepository _categoryProductRedisRepository;
         private readonly ICategoryProductRepository _categoryProductRepository;
         private readonly ICategoryRedisRepository _categoryRedisRepository;
@@ -51,16 +53,16 @@ namespace CatalogApiReading.IntegrationEvent.EventHandling
                     var categoryProducts = await _categoryProductRepository.GetAll();
 
                     var categories = categoryProducts.GroupBy(g => g.Name)
-                                                     .Select(s => new Category
+                                                     .Select(s => new CategoryResponse
                                                      {
                                                          Id = s.FirstOrDefault().Id,
                                                          Name = s.FirstOrDefault().Name
                                                      }).ToList();
 
-                    //if (categories.Any())
-                    //    _categoryRedisRepository.Delete();                    
+                    if (categories.Any())
+                        _categoryRedisRepository.Remove(KEY_CACHE, (int)RedisBase.Category);
 
-                    //_categoryRedisRepository.Add(categories);                   
+                    _categoryRedisRepository.Set(KEY_CACHE, categories, (int)RedisBase.Category);
 
                 }                
             }
