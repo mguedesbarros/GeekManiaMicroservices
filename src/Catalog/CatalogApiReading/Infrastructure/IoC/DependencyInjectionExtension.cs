@@ -1,5 +1,6 @@
 ﻿using CatalogApiReading.Infrastructure.Data;
 using CatalogApiReading.Infrastructure.Data.Caching;
+using CatalogApiReading.Infrastructure.Data.Caching.CategoryProduct;
 using CatalogApiReading.Infrastructure.Data.Category;
 using CatalogApiReading.Infrastructure.Data.CategoryProduct;
 using CatalogApiReading.Infrastructure.Data.Product;
@@ -60,25 +61,22 @@ namespace CatalogApiReading.Infrastructure.IoC
                     var factory = new ConnectionFactory()
                     {
                         HostName = Configuration["EventBusConnection"],
+#if DEBUG
                         Port = int.Parse(Configuration["EventBusPort"]),
+#endif
                         DispatchConsumersAsync = true
                        
                     };
-
-                    Console.WriteLine($"HostName - {Configuration["EventBusConnection"]}");
-                    Console.WriteLine($"Port - {Configuration["EventBusPort"]}");
-                    
+                                        
 
                     if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
                     {
                         factory.UserName = Configuration["EventBusUserName"];
-                        Console.WriteLine($"HostName - {factory.UserName}");
                     }
 
                     if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
                     {
                         factory.Password = Configuration["EventBusPassword"];
-                        Console.WriteLine($"HostName - {factory.Password}");
                     }
 
                     var retryCount = 5;

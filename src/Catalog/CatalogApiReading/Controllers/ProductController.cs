@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using CatalogApiReading.Infrastructure.Data;
+using CatalogApiReading.Infrastructure.Data.Caching;
+using CatalogApiReading.Infrastructure.Data.Caching.CategoryProduct;
 using CatalogApiReading.Infrastructure.Data.CategoryProduct;
 using CatalogApiReading.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +17,7 @@ namespace CatalogApiReading.Controllers
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
+        const string KEY_CACHE = "categoryProduct";
         private readonly ICategoryProductRedisRepository _categoryProductRedisRepository;
         private readonly ICategoryProductRepository _categoryProductRepository;
 
@@ -32,13 +35,18 @@ namespace CatalogApiReading.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetCategoryProductsByDocumentId(Guid id)
         {
-            var categoryProducts = await _categoryProductRedisRepository.GetCategoryProductsByDocumentId(id);
+            var key = $"{KEY_CACHE}-{id}";
 
-            if (!categoryProducts.Products.Any())
+            var categoryProducts = await _categoryProductRedisRepository.Get<CategoryProduct>(key, (int)RedisBase.Product, true);
+
+
+            if (categoryProducts != null && categoryProducts.Products.Any())
+                return Ok(categoryProducts);
+            else
             {
                 categoryProducts = await _categoryProductRepository.GetCategoryProductsByDocumentId(id);
 
-                _categoryProductRedisRepository.Add(categoryProducts);
+                _categoryProductRedisRepository.Set(key, categoryProducts, (int)RedisBase.Product);
             }
 
             return Ok(categoryProducts);

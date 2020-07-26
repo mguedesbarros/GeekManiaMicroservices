@@ -1,4 +1,5 @@
 ﻿using CatalogApiReading.Infrastructure.Data;
+using CatalogApiReading.Infrastructure.Data.Caching.CategoryProduct;
 using CatalogApiReading.Infrastructure.Data.CategoryProduct;
 using CatalogApiReading.Infrastructure.Data.UoW;
 using CatalogApiReading.IntegrationEvent.Events;
@@ -53,12 +54,12 @@ namespace CatalogApiReading.IntegrationEvent.EventHandling
                 _categoryProductRepository.Update(categoryProduct);
                 await _uow.Commit();
 
-                var resultRedis = await _categoryProductRedisRepository.GetCategoryProductsByDocumentId(categoryProduct.Id);
+                //var resultRedis = await _categoryProductRedisRepository.GetCategoryProductsByDocumentId(categoryProduct.Id);
 
-                if (resultRedis != null)
-                    _categoryProductRedisRepository.Delete(categoryProduct.Id);
+                //if (resultRedis != null)
+                //    _categoryProductRedisRepository.Delete(categoryProduct.Id);
 
-                _categoryProductRedisRepository.Add(categoryProduct);
+                //_categoryProductRedisRepository.Add(categoryProduct);
 
             }
         }

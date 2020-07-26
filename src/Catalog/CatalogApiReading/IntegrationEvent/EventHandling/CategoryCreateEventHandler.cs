@@ -1,4 +1,5 @@
 ﻿using CatalogApiReading.Infrastructure.Data;
+using CatalogApiReading.Infrastructure.Data.Caching.CategoryProduct;
 using CatalogApiReading.Infrastructure.Data.Category;
 using CatalogApiReading.Infrastructure.Data.CategoryProduct;
 using CatalogApiReading.Infrastructure.Data.UoW;

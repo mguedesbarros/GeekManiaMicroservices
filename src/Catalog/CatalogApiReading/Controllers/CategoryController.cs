@@ -39,14 +39,15 @@ namespace CatalogApiReading.Controllers
         {
             try
             {
-                var response = new List<CategoryResponse>();
-                var categories = await _categoryRedis.Get<List<Category>>(KEY_CACHE, (int)RedisBase.Category, true);
+                var categories = await _categoryRedis.Get<List<CategoryResponse>>(KEY_CACHE, (int)RedisBase.Category, true);
 
-                if (categories == null || !categories.Any())
+                if (categories != null)
+                    return Ok(categories);
+                else
                 {
                     var categoryProducts = await _categoryProductRepository.GetAll();
 
-                    response = categoryProducts.GroupBy(g => g.Name)
+                    var response = categoryProducts.GroupBy(g => g.Name)
                                                      .Select(s => new CategoryResponse
                                                      {
                                                          Id = s.FirstOrDefault().Id,
@@ -56,10 +57,10 @@ namespace CatalogApiReading.Controllers
                     if (categoryProducts.Any())
                         _categoryRedis.Remove(KEY_CACHE, (int)RedisBase.Category);
 
-                    _categoryRedis.Set(KEY_CACHE, categoryProducts, (int)RedisBase.Category);
-                }
+                    _categoryRedis.Set(KEY_CACHE, response, (int)RedisBase.Category);
 
-                return Ok(response);
+                    return Ok(response);
+                }                
             }
             catch (Exception ex)
             {
