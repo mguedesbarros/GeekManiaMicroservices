@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using CatalogApiReading.Infrastructure.Data.Caching;
 using CatalogApiReading.Infrastructure.Data.Category;
 using CatalogApiReading.Infrastructure.Data.CategoryProduct;
 using CatalogApiReading.Models;
@@ -15,11 +16,12 @@ namespace CatalogApiReading.Controllers
     [Route("api/[controller]")]
     public class CategoryController : ControllerBase
     {
+        const string KEY_CACHE = "categories";
         private readonly ICategoryProductRepository _categoryProductRepository;
         private readonly ICategoryRedisRepository _categoryRedis;
         private readonly ILogger<CategoryController> _logger;
 
-        public CategoryController(ICategoryProductRepository categoryProductRepository, 
+        public CategoryController(ICategoryProductRepository categoryProductRepository,
                                   ICategoryRedisRepository categoryRedis,
                                   ILogger<CategoryController> logger)
         {
@@ -30,40 +32,41 @@ namespace CatalogApiReading.Controllers
 
         [HttpGet]
         [Route("Get")]
-        [ProducesResponseType(typeof(IList<Category>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IList<CategoryResponse>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult> Get()
         {
             try
             {
-                var categories = await _categoryRedis.GetCategories();
+                var response = new List<CategoryResponse>();
+                var categories = await _categoryRedis.Get<List<Category>>(KEY_CACHE, (int)RedisBase.Category, true);
 
-                if (!categories.Any())
+                if (categories == null || !categories.Any())
                 {
                     var categoryProducts = await _categoryProductRepository.GetAll();
 
-                    categories = categoryProducts.GroupBy(g => g.Name)
-                                                     .Select(s => new Category
+                    response = categoryProducts.GroupBy(g => g.Name)
+                                                     .Select(s => new CategoryResponse
                                                      {
                                                          Id = s.FirstOrDefault().Id,
                                                          Name = s.FirstOrDefault().Name
                                                      }).ToList();
 
-                    if (categories.Any())
-                        _categoryRedis.Delete();
+                    if (categoryProducts.Any())
+                        _categoryRedis.Remove(KEY_CACHE, (int)RedisBase.Category);
 
-                    _categoryRedis.Add(categories);
+                    _categoryRedis.Set(KEY_CACHE, categoryProducts, (int)RedisBase.Category);
                 }
 
-                return Ok(categories);
+                return Ok(response);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogCritical(ex.Message);
                 return BadRequest();
             }
-            
+
         }
     }
 }

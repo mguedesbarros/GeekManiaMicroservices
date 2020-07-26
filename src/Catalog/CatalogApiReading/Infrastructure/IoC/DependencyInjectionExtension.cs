@@ -1,4 +1,5 @@
 ﻿using CatalogApiReading.Infrastructure.Data;
+using CatalogApiReading.Infrastructure.Data.Caching;
 using CatalogApiReading.Infrastructure.Data.Category;
 using CatalogApiReading.Infrastructure.Data.CategoryProduct;
 using CatalogApiReading.Infrastructure.Data.Product;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +31,7 @@ namespace CatalogApiReading.Infrastructure.IoC
             services.AddSingleton<ICatalogDatabaseSettings>(sp => sp.GetRequiredService<IOptions<CatalogDatabaseSettings>>().Value)
                 .AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>()
                 .AddScoped<ICatalogContext, CatalogContext>()
+                .AddScoped<ICatalogRedisContext, CatalogRedisContext>()
                 .AddScoped<IUnitOfWork, UnitOfWork>()
                 .AddScoped<IProductRedisRepository, ProductRedisRepository>()
                 .AddScoped<ICategoryRedisRepository, CategoryRedisRepository>()
@@ -90,11 +93,17 @@ namespace CatalogApiReading.Infrastructure.IoC
                 .AddTransient<IEventHandler<ProductCreateEvent>, ProductCreateEventHandler>()
                 .AddTransient<CategoryCreateEventHandler>()
                 .AddTransient<IEventHandler<CategoryCreateEvent>, CategoryCreateEventHandler>()
-                .AddDistributedRedisCache(options =>
+                .AddSingleton<ConnectionMultiplexer>(sp =>
                 {
-                    options.Configuration = Configuration.GetConnectionString("RedisConnection");
-                    options.InstanceName = "GeekMania:";
+                    var configuration = ConfigurationOptions.Parse(Configuration.GetConnectionString("RedisConnection"), true);
+                    return ConnectionMultiplexer.Connect(configuration);
                 });
+
+            //.AddDistributedRedisCache(options =>
+            //{
+            //    options.Configuration = Configuration.GetConnectionString("RedisConnection");
+            //    options.InstanceName = "GeekMania:";
+            //});
 
 
             return services;

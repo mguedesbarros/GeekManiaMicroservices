@@ -56,10 +56,10 @@ namespace CatalogApiReading.IntegrationEvent.EventHandling
                                                          Name = s.FirstOrDefault().Name
                                                      }).ToList();
 
-                    if (categories.Any())
-                        _categoryRedisRepository.Delete();                    
+                    //if (categories.Any())
+                    //    _categoryRedisRepository.Delete();                    
 
-                    _categoryRedisRepository.Add(categories);                   
+                    //_categoryRedisRepository.Add(categories);                   
 
                 }                
             }
