@@ -5,8 +5,10 @@ using CatalogApiReading.Infrastructure.Data.Category;
 using CatalogApiReading.Infrastructure.Data.CategoryProduct;
 using CatalogApiReading.Infrastructure.Data.Product;
 using CatalogApiReading.Infrastructure.Data.UoW;
-using CatalogApiReading.IntegrationEvent.EventHandling;
-using CatalogApiReading.IntegrationEvent.Events;
+using CatalogApiReading.IntegrationEvent.EventHandling.Category;
+using CatalogApiReading.IntegrationEvent.EventHandling.Product;
+using CatalogApiReading.IntegrationEvent.Events.Category;
+using CatalogApiReading.IntegrationEvent.Events.Product;
 using CatalogApiReading.Models;
 using GeekManiaMicroservices.Broker.EventBus;
 using GeekManiaMicroservices.Broker.EventBus.Abstractions;
@@ -17,10 +19,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CatalogApiReading.Infrastructure.IoC
 {
@@ -89,8 +87,12 @@ namespace CatalogApiReading.Infrastructure.IoC
                 })
                 .AddTransient<ProductCreateEventHandler>()
                 .AddTransient<IEventHandler<ProductCreateEvent>, ProductCreateEventHandler>()
+                .AddTransient<ProductUpdateEventHandler>()
+                .AddTransient<IEventHandler<ProductUpdateEvent>, ProductUpdateEventHandler>()
                 .AddTransient<CategoryCreateEventHandler>()
                 .AddTransient<IEventHandler<CategoryCreateEvent>, CategoryCreateEventHandler>()
+                .AddTransient<CategoryUpdateEventHandler>()
+                .AddTransient<IEventHandler<CategoryUpdateEvent>, CategoryUpdateEventHandler>()
                 .AddSingleton<ConnectionMultiplexer>(sp =>
                 {
                     var configuration = ConfigurationOptions.Parse(Configuration.GetConnectionString("RedisConnection"), true);

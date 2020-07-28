@@ -1,31 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CatalogApiReading.Infrastructure.Data;
-using CatalogApiReading.Infrastructure.Data.Product;
 using CatalogApiReading.Infrastructure.IoC;
-using CatalogApiReading.IntegrationEvent.EventHandling;
-using CatalogApiReading.IntegrationEvent.Events;
+using CatalogApiReading.IntegrationEvent.EventHandling.Category;
+using CatalogApiReading.IntegrationEvent.EventHandling.Product;
+using CatalogApiReading.IntegrationEvent.Events.Category;
+using CatalogApiReading.IntegrationEvent.Events.Product;
 using CatalogApiReading.Models;
-using GeekManiaMicroservices.Broker.EventBus;
 using GeekManiaMicroservices.Broker.EventBus.Abstractions;
-using GeekManiaMicroservices.Broker.EventBusRabbitMQ;
-using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using RabbitMQ.Client;
 
 namespace CatalogApiReading
 {
@@ -116,8 +103,10 @@ namespace CatalogApiReading
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            eventBus.Subscribe<ProductCreateEvent, ProductCreateEventHandler>();
             eventBus.Subscribe<CategoryCreateEvent, CategoryCreateEventHandler>();
+            eventBus.Subscribe<CategoryUpdateEvent, CategoryUpdateEventHandler>();
+            eventBus.Subscribe<ProductCreateEvent, ProductCreateEventHandler>();
+            eventBus.Subscribe<ProductUpdateEvent, ProductUpdateEventHandler>();
         }
     }
 }

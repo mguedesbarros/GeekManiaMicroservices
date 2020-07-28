@@ -86,5 +86,22 @@ namespace CatalogApi.Controllers
                 return BadRequest(ex);
             }
         }
+
+        [HttpGet]
+        [Route("GetProducts")]
+        [ProducesResponseType(typeof(IList<ProductModel>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> GetProducts()
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.GetErrorResponse());
+
+            var result = await _service.GetProducts();
+            if (!result.Any())
+                return NotFound();
+
+            return Ok(result);
+        }
     }
 }

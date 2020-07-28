@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace CatalogApi.Domain.Aggregates.Handlers
 {
-    public class ProductCreateEventHandler : IEventHandler<ProductCreateEvent>
+    public class ProductCreateEventHandler : 
+        IEventHandler<ProductCreateEvent>
     {
         public Task Handle(ProductCreateEvent @event)
         {

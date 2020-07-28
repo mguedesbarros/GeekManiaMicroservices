@@ -25,6 +25,16 @@ namespace CatalogApiReading.Models
             UpdatedAt = createdAt;
         }
 
+        internal void Update(Guid id, string name, string image, string status)
+        {
+            Id = id;
+            Name = name;
+            Image = image;
+            Status = status;
+            Products = new List<Product>();
+            UpdatedAt = DateTime.Now;
+        }
+
         [JsonProperty("name")]
         public string Name { get; private set; }
         [JsonProperty("image")]

@@ -12,7 +12,16 @@ namespace CatalogApiReading.Models
     {
         public Product() { }
 
-        public Product(Guid id, string name, string description, long unityPrice, long quantityInStock, List<Image> images, SubCategory subCategory, string status, DateTime createdAt, DateTime updatedAt)
+        public Product(Guid id, 
+                        string name, 
+                        string description, 
+                        decimal unityPrice, 
+                        int quantityInStock, 
+                        List<Image> images, 
+                        SubCategory subCategory, 
+                        string status, 
+                        DateTime createdAt, 
+                        DateTime updatedAt)
         {
             Id = id;
             Name = name;
@@ -26,6 +35,27 @@ namespace CatalogApiReading.Models
             UpdatedAt = updatedAt;
         }
 
+        internal void Update(Guid id,
+                        string name,
+                        string description,
+                        decimal unityPrice,
+                        int quantityInStock,
+                        List<Image> images,
+                        SubCategory subCategory,
+                        string status,
+                        DateTime updatedAt)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            UnityPrice = unityPrice;
+            QuantityInStock = quantityInStock;
+            Images = images;
+            this.subCategory = subCategory;
+            Status = status;
+            UpdatedAt = updatedAt;
+        }
+
         [JsonProperty("name")]
         public string Name { get; private set; }
 
@@ -33,10 +63,10 @@ namespace CatalogApiReading.Models
         public string Description { get; private set; }
 
         [JsonProperty("unityPrice")]
-        public long UnityPrice { get; private set; }
+        public decimal UnityPrice { get; private set; }
 
         [JsonProperty("quantityInStock")]
-        public long QuantityInStock { get; private set; }
+        public int QuantityInStock { get; private set; }
 
         [JsonProperty("images")]
         public List<Image> Images { get; private set; }

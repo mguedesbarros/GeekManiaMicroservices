@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace CatalogApi.Domain.Aggregates.Events.Category.Handler
 {
-    public class CategoryEventHandler : INotificationHandler<CategoryCreateEvent>
+    public class CategoryEventHandler : 
+        INotificationHandler<CategoryCreateEvent>,
+        INotificationHandler<CategoryUpdateEvent>
     {
         private readonly IEventBus _eventBus;
 
@@ -18,6 +20,12 @@ namespace CatalogApi.Domain.Aggregates.Events.Category.Handler
         }
 
         public Task Handle(CategoryCreateEvent notification, CancellationToken cancellationToken)
+        {
+            _eventBus.AddEvent(notification);
+            return Task.CompletedTask;
+        }
+
+        public Task Handle(CategoryUpdateEvent notification, CancellationToken cancellationToken)
         {
             _eventBus.AddEvent(notification);
             return Task.CompletedTask;

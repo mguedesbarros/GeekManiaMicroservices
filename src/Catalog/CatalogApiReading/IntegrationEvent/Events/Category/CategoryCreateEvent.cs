@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CatalogApiReading.IntegrationEvent.Events
+namespace CatalogApiReading.IntegrationEvent.Events.Category
 {
     public class CategoryCreateEvent : Event<CategoryEvent>
     {

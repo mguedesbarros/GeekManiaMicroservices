@@ -5,6 +5,7 @@ using CatalogApiReading.Infrastructure.Data.Category;
 using CatalogApiReading.Infrastructure.Data.CategoryProduct;
 using CatalogApiReading.Infrastructure.Data.UoW;
 using CatalogApiReading.IntegrationEvent.Events;
+using CatalogApiReading.IntegrationEvent.Events.Category;
 using CatalogApiReading.Models;
 using GeekManiaMicroservices.Broker.EventBus.Abstractions;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -13,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CatalogApiReading.IntegrationEvent.EventHandling
+namespace CatalogApiReading.IntegrationEvent.EventHandling.Category
 {
     public class CategoryCreateEventHandler : IEventHandler<CategoryCreateEvent>
     {
@@ -23,7 +24,7 @@ namespace CatalogApiReading.IntegrationEvent.EventHandling
         private readonly ICategoryRedisRepository _categoryRedisRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CategoryCreateEventHandler(ICategoryProductRedisRepository categoryProductRedisRepository, 
+        public CategoryCreateEventHandler(ICategoryProductRedisRepository categoryProductRedisRepository,
                                           ICategoryProductRepository categoryProductRepository,
                                           ICategoryRedisRepository categoryRedisRepository,
                                           IUnitOfWork unitOfWork)
@@ -43,7 +44,7 @@ namespace CatalogApiReading.IntegrationEvent.EventHandling
                 var categoryProduct = new CategoryProduct(categoryEvent.Id, categoryEvent.Name, categoryEvent.Image, categoryEvent.CreatedAt);
 
                 var result = await _categoryProductRepository.GetCategoryProductsByDocumentId(categoryEvent.Id);
-                
+
                 if (result == null)
                 {
                     _categoryProductRepository.Add(categoryProduct);
@@ -52,11 +53,13 @@ namespace CatalogApiReading.IntegrationEvent.EventHandling
 
                     var categoryProducts = await _categoryProductRepository.GetAll();
 
-                    var categories = categoryProducts.GroupBy(g => g.Name)
+                    var categories = categoryProducts.Where(x => x.Status == "A")
+                                                     .GroupBy(g => g.Name)
                                                      .Select(s => new CategoryResponse
                                                      {
                                                          Id = s.FirstOrDefault().Id,
-                                                         Name = s.FirstOrDefault().Name
+                                                         Name = s.FirstOrDefault().Name,
+                                                         Image = s.FirstOrDefault().Image
                                                      }).ToList();
 
                     if (categories.Any())
@@ -64,12 +67,12 @@ namespace CatalogApiReading.IntegrationEvent.EventHandling
 
                     _categoryRedisRepository.Set(KEY_CACHE, categories, (int)RedisBase.Category);
 
-                }                
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                
-            }   
+
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CatalogApiReading.IntegrationEvent.Events
+namespace CatalogApiReading.IntegrationEvent.Events.Product
 {
     public class ProductCreateEvent : Event<ProductEvent>
     {
@@ -42,10 +42,10 @@ namespace CatalogApiReading.IntegrationEvent.Events
         public string Description { get; set; }
 
         [JsonProperty("unity_price")]
-        public long UnityPrice { get; set; }
+        public decimal UnityPrice { get; set; }
 
         [JsonProperty("quantity_in_stock")]
-        public long QuantityInStock { get; set; }
+        public int QuantityInStock { get; set; }
 
         [JsonProperty("image")]
         public string Image { get; set; }

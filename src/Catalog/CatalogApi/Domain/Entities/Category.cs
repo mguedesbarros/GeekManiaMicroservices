@@ -46,7 +46,7 @@ namespace CatalogApi.Domain.Entities
             this.SubCategories = subCategories;
             this.UpdatedAt = DateTime.Now;
 
-            //RaiseEvent(new CategoryCreateEvent("Category.Update", this));
+            RaiseEvent(new CategoryUpdateEvent("Category.Update", this));
         }
 
         internal void Delete()
@@ -54,8 +54,7 @@ namespace CatalogApi.Domain.Entities
             this.UpdatedAt = DateTime.Now;
             this.Status = "I";
 
-            //RaiseEvent(new DeleteEvent<Category>("Category.Delete", this));
-            //RaiseEvent(new CategoryCreateEvent("Category.Update", this));
+            RaiseEvent(new CategoryUpdateEvent("Category.Update", this));
         }
     }
 }

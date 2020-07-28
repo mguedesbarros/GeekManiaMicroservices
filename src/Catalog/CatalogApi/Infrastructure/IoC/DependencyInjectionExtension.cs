@@ -15,6 +15,8 @@ using GeekManiaMicroservices.Broker.EventBusRabbitMQ;
 using GeekManiaMicroservices.Broker.EventBus;
 using CatalogApi.Domain.SeedWork;
 using GeekManiaMicroservices.Broker.EventBus.Abstractions;
+using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace CatalogApi.Infrastructure.IoC
 {
@@ -22,6 +24,13 @@ namespace CatalogApi.Infrastructure.IoC
     {
         public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
         {
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            var cnn = config.GetConnectionString("DefaultConnection");
+
             services
                .AddSingleton<ITypeAdapterFactory, AutoMapperTypeAdapterFactory>()
                .AddSingleton<ITypeAdapter, AutoMapperTypeAdapter>()
@@ -73,15 +82,14 @@ namespace CatalogApi.Infrastructure.IoC
                    }
 
                    return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
-               }
-               )
+               })
                .AddScoped<IUnitOfWork, UnitOfWork>()
-               .AddDbContext<CatalogContext>()
+               .AddDbContext<CatalogContext>(options => options.UseMySql(cnn))
                .AddTransient<ICategoryRepository, CategoryRepository>()
                .AddTransient<ICategoryQueriesRepository, CategoryQueriesRepository>()
                .AddTransient<ICategoryAppService, CategoryAppService>()
                .AddTransient<IProductRepository, ProductRepository>()
-               //.AddTransient<IProductQueriesRepository, ProductQueriesRepository>()
+               .AddTransient<IProductQueriesRepository, ProductQueriesRepository>()
                .AddTransient<IProductAppService, ProductAppService>();
 
             services.AddMediatR(typeof(Entity));

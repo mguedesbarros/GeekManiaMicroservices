@@ -37,27 +37,6 @@ namespace CatalogApi.Infrastructure.Data
         public DbSet<SubCategory> SubCategory { get; set; }
         public DbSet<ProductImage> ProductImage { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
-
-            var cnn = config.GetConnectionString("DefaultConnection");
-            optionsBuilder.UseMySql(cnn)
-                .EnableDetailedErrors()
-                .UseLoggerFactory(_loggerFactory);
-
-            this.connection = new MySqlConnection(cnn);            
-
-            //#if DEBUG
-            //            optionsBuilder.UseMySql("Server=167.99.99.251;Port=3333;Database=geekmania;Uid=root;Pwd=geekmania!202@");
-            //#else
-            //            optionsBuilder.UseMySql("Server=geekmania-db;Port=3306;Database=geekmania;Uid=root;Pwd=geekmania!202@");
-            //#endif
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 

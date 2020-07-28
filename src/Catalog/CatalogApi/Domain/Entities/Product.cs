@@ -61,8 +61,7 @@ namespace CatalogApi.Domain.Entities
             Images = images;
 
             this.UpdatedAt = DateTime.Now;
-
-            RaiseEvent(new UpdateEvent<Product>("Product.Update", this));
+            RaiseEvent(new ProductUpdateEvent("Product.Update", this));
         }
 
         internal void Delete()
@@ -70,7 +69,7 @@ namespace CatalogApi.Domain.Entities
             this.UpdatedAt = DateTime.Now;
             this.Status = "I";
 
-            RaiseEvent(new DeleteEvent<Product>("Product.Delete", this));
+            RaiseEvent(new ProductUpdateEvent("Product.Update", this));
         }
 
         public string Name { get; private set; }

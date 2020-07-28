@@ -4,13 +4,14 @@ using CatalogApiReading.Infrastructure.Data.Caching.CategoryProduct;
 using CatalogApiReading.Infrastructure.Data.CategoryProduct;
 using CatalogApiReading.Infrastructure.Data.UoW;
 using CatalogApiReading.IntegrationEvent.Events;
+using CatalogApiReading.IntegrationEvent.Events.Product;
 using CatalogApiReading.Models;
 using GeekManiaMicroservices.Broker.EventBus.Abstractions;
 using MongoDB.Driver;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CatalogApiReading.IntegrationEvent.EventHandling
+namespace CatalogApiReading.IntegrationEvent.EventHandling.Product
 {
     public class ProductCreateEventHandler : IEventHandler<ProductCreateEvent>
     {
@@ -43,7 +44,7 @@ namespace CatalogApiReading.IntegrationEvent.EventHandling
                 if (productBase != null)
                     categoryProduct.Products.Remove(productBase);
 
-                var product = new Product(productEvent.Id,
+                var product = new Models.Product(productEvent.Id,
                         productEvent.Name,
                         productEvent.Description,
                         productEvent.UnityPrice,

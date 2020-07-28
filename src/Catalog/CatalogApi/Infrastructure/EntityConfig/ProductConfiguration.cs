@@ -14,8 +14,9 @@ namespace CatalogApi.Infrastructure.EntityConfig
                    .HasForeignKey(p => p.ProductId);
 
             builder.HasOne(c => c.Category)
-                   .WithMany(e => e.Products)
-                   .HasForeignKey(p => p.CategoryId);
+                   .WithMany(e => e.Products)                   
+                   .HasForeignKey(p => p.CategoryId)
+                   .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasKey(b => b.Id);
             builder.Property(p => p.Id).IsRequired();

@@ -17,11 +17,11 @@ namespace CatalogApi.Application.Profiles
         private void MapCreateProduct()
         {
             CreateMap<ProductImage, ProductImageModel>();
-
             CreateMap<ProductImageModel, ProductImage>()
                 .ForMember(d => d.ProductId, o => o.Ignore())
                 .ForMember(d => d.Product, o => o.Ignore());
 
+            CreateMap<Product, ProductModel>();
 
             CreateMap<CreateProductRequest, CreateProductCommand>()
                 .ForMember(d => d.Name, opt => opt.MapFrom(o => o.Name))
